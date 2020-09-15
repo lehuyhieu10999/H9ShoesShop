@@ -33,10 +33,6 @@ namespace H9ShoesShopApp
             services.AddMvc(option =>
             {
                 option.EnableEndpointRouting = false;
-                var policy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build();
-                option.Filters.Add(new AuthorizeFilter(policy));
             });
             services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("H9ShoesDbString")));
@@ -61,7 +57,7 @@ namespace H9ShoesShopApp
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseAuthentication();
+            
 
             app.UseAuthorization();
 
