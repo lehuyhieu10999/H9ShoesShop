@@ -12,7 +12,7 @@ namespace H9ShoesShopApp.Models.Entities
         [Required]
         public string CategoryName { get; set; }
         [Required]
-        public string Image { get; set; }
+        public string ImagePath { get; set; }
         public ICollection<Product> Product { get; set; }
         public bool IsDelete { get; set; }
         public bool Status { get; set; }

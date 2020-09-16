@@ -381,3 +381,17 @@ C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\ob
 C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\H9ShoesShopApp.dll
 C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\H9ShoesShopApp.pdb
 C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\H9ShoesShopApp.genruntimeconfig.cache
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Category\Create.cshtml.g.cs
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_DashboardLayout.cshtml.g.cs
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Category\Edit.cshtml.g.cs
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Category\Index.cshtml.g.cs
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\bin\Debug\netcoreapp3.1\libman.json
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Category\_ViewStart.cshtml.g.cs
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Product\Create.cshtml.g.cs
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Product\Edit.cshtml.g.cs
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Product\Index.cshtml.g.cs
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Product\_ViewStart.cshtml.g.cs
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Account\Login.cshtml.g.cs
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Account\Register.cshtml.g.cs
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Login.cshtml.g.cs
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Register.cshtml.g.cs

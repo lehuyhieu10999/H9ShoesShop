@@ -1,0 +1,125 @@
+﻿@model ProductCreate
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewBag.Title = "Tạo mới sản phẩm";
+    var categories = ViewBag.Categories as List<Category>;
+}
+
+<h3 class="m-0 font-weight-bold text-primary mb-5">@ViewBag.Title</h3>
+<form enctype="multipart/form-data" asp-controller="Product" asp-action="Create" method="post">
+    <div class="row form-group">
+        <div class="col-sm-2">
+            <label asp-for="CategoryId"></label>
+        </div>
+        <div class="col-sm-10">
+            <select asp-for="CategoryId" class="custom-select" onchange="site.Change(this.value)">
+                <option disabled selected>Chọn loại</option>
+                @foreach (var category in categories)
+                {
+                    @if (!category.IsDelete)
+                    {
+                        <option value="@category.CategoryId">@category.CategoryName</option>
+}
+                    continue;
+                }
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-sm-2">
+            <label asp-for="ProductName"></label>
+        </div>
+        <div class="col-sm-10">
+            <input asp-for="ProductName" class="form-control" />
+            <span asp-validation-for="ProductName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-sm-2">
+            <label asp-for="Brand"></label>
+        </div>
+        <div class="col-sm-10">
+            <input asp-for="Brand" type="text" class="form-control" />
+            <span asp-validation-for="Brand" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-sm-2">
+            <label asp-for="Size"></label>
+        </div>
+        <div class="col-sm-10">
+            <select asp-for="Size" class="custom-select">
+                <option disabled selected>Chọn size</option>
+                @for (var i = 30; i < 45; i++)
+                {
+                    <option value="@i">i</option>
+
+                }
+            </select>
+            <span asp-validation-for="Size" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-sm-2">
+            <label asp-for="Description"></label>
+        </div>
+        <div class="col-sm-10">
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-sm-2">
+            <label asp-for="Price"></label>
+        </div>
+        <div class="col-sm-10">
+            <input asp-for="Price" min="10000" type="number" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-sm-2">
+            <label asp-for="Sale"></label>
+        </div>
+        <div class="col-sm-10">
+            <input asp-for="Sale" type="number" class="form-control" />
+            <span asp-validation-for="Sale" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-sm-2">
+            <label></label>
+        </div>
+        <div class="col-sm-10">
+            <div class="custom-file">
+                <input class="custom-file-input" value="nonPhone.png" asp-for="Image">
+                <label class="custom-file-label" asp-for="Image" for="customFile">Chọn ảnh</label>
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mb-3">
+        <img id="avatar" src="~/images/Product/nonimage.png" style="width:300px;height:300px" />
+    </div>
+    <div class="row form-group justify-content-center">
+        <button type="submit" class="btn btn-primary form-group mr-5">Tạo mới</button>
+        <a asp-controller="Product" asp-action="Index" class="btn btn-warning form-group">Trở lại</a>
+    </div>
+</form>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".custom-file-input").on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                $("#avatar").attr("src", window.URL.createObjectURL($(this)[0].files[0]));
+            });
+        });
+    </script>
+}
+
+

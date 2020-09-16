@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using H9ShoesShopApp.Models.Entities;
 using H9ShoesShopApp.Models.Repository;
+using H9ShoesShopApp.ViewModel.Category;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +15,7 @@ namespace H9ShoesShopApp.Controllers
     {
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly IRepository<Category> categoryRepository;
-        public IRepository<Product> productRepository { get; }
+        public readonly IRepository<Product> productRepository;
 
         public CategoryController(IWebHostEnvironment webHostEnvironment,
             IRepository<Product> productRepository,
@@ -32,7 +34,128 @@ namespace H9ShoesShopApp.Controllers
         {
             return View();
         }
-        
+        [HttpPost]
+        public IActionResult Create(CategoryCreate model)
+        {
+            if (ModelState.IsValid)
+            {
+                var category = new Category()
+                {
+                    CategoryName = model.CategoryName,
+                    IsDelete = false,
+                    Status = true
+                };
+                var fileName = string.Empty;
+                if (model.CategoryImage != null)
+                {
+                    string uploadFolder = Path.Combine(webHostEnvironment.WebRootPath, "images/Category");
+                    fileName = $"{Guid.NewGuid()}_{model.CategoryImage.FileName}";
+                    var filePath = Path.Combine(uploadFolder, fileName);
+                    using (var fs = new FileStream(filePath, FileMode.Create))
+                    {
+                        model.CategoryImage.CopyTo(fs);
+                    }
+                }
+                if(model.CategoryImage == null)
+                {
+                    fileName = "~/images/Category/nonCat.jpg";
+                }
+                category.ImagePath = fileName;
+                categoryRepository.Create(category);
+                ViewBag.Categories = categoryRepository.Gets();
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.Categories = categoryRepository.Gets();
+            return View();
+        }
+        [HttpGet]
+        public IActionResult Edit(string id)
+        {
+            try
+            {
+                var category = categoryRepository.Get(int.Parse(id));
+                if (category != null && !category.IsDelete)
+                {
+                    var edit = new CategoryEdit()
+                    {
+                        ImagePath = category.ImagePath,
+                        CategoryName = category.CategoryName,
+                        CategoryId = category.CategoryId
+                    };
+                    return View(edit);
+                }
+                else
+                {
+                    ViewBag.id = id;
+                    return View("~/Views/Error/CategoryNotFound.cshtml");
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.id = id;
+                return View("~/Views/Error/CategoryNotFound.cshtml");
+            }
+        }
 
+        [HttpPost]
+        public IActionResult Edit(CategoryEdit model)
+        {
+            if (ModelState.IsValid)
+            {
+                var category = new Category()
+                {
+                    CategoryName = model.CategoryName,
+                    CategoryId = model.CategoryId,
+                    ImagePath = model.ImagePath
+                };
+                var fileName = string.Empty;
+                if (model.Image != null)
+                {
+                    string uploadFolder = Path.Combine(webHostEnvironment.WebRootPath, "images/Category");
+                    fileName = $"{Guid.NewGuid()}_{model.Image.FileName}";
+                    var filePath = Path.Combine(uploadFolder, fileName);
+                    using (var fs = new FileStream(filePath, FileMode.Create))
+                    {
+                        model.Image.CopyTo(fs);
+                    }
+                    category.ImagePath = fileName;
+                    if (!string.IsNullOrEmpty(model.ImagePath))
+                    {
+                        string delFile = Path.Combine(webHostEnvironment.WebRootPath,
+                                            "images/Category", model.ImagePath);
+                        System.IO.File.Delete(delFile);
+                    }
+                }
+                else
+                {
+                    fileName = model.ImagePath;
+                }
+                category.ImagePath = fileName;
+                var editEmp = categoryRepository.Edit(category);
+                if (editEmp != null)
+                {
+                    return RedirectToAction("Index", "Category");
+                }
+            }
+            return View();
+        }
+        public IActionResult Delete(int id)
+        {
+
+            if (categoryRepository.Delete(id))
+            {
+                return RedirectToAction("Index","Category");
+            }
+            return View();
+        }
+        [HttpGet]
+        [Route("Category/{id}/{status}")]
+        public JsonResult ChangeStatus(int id, bool status)
+        {
+            var category = categoryRepository.Get(id);
+            category.Status = status;
+            categoryRepository.Edit(category);
+            return Json(new { category });
+        }
     }
 }
