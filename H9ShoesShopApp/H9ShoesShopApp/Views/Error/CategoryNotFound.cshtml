@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Lỗi không tìm thấy";
+}
+<div style="padding-bottom:300px;margin-top:260px;">
+    <div class="alert alert-danger mt-2">
+        <h1>Error 404</h1>
+        <hr />
+        <h5>Không tìm thấy Id = @ViewBag.id.ToString() </h5>
+    </div>
+    <a asp-controller="Category" asp-action="Index" class="btn btn-outline-danger" style="width:auto">
+        Trở lại 
+    </a>
+</div>

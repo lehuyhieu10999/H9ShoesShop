@@ -62,6 +62,19 @@
                     </a>
                 </li>
             }
+            <li class="nav-item">
+                <a class="nav-link collapsed" asp-controller="User" asp-action="Index2" aria-expanded="true">
+                    <i class="fas fa-users"></i>
+                    <span>Khách hàng</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" asp-controller="Home" asp-action="Index" aria-expanded="true">
+                    <i class="fas fa-home"></i>
+                    <span>Trang chủ người dùng</span>
+                </a>
+            </li>
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
@@ -224,7 +237,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+                        <span>Copyright &copy; H9 Shoes &times;</span>
                     </div>
                 </div>
             </footer>
@@ -254,12 +267,9 @@
     <script src="~/mystyle/vendor/bootstrap/js/bootstrap.js"></script>
     <script src="~/mystyle/vendor/jquery-easing/jquery.easing.js"></script>
     <script src="~/mystyle/js/sb-admin-2.js"></script>
-    <script src="~/mystyle/vendor/chart.js/Chart.js"></script>
     <script src="~/mystyle/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="~/mystyle/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="~/mystyle/js/demo/datatables-demo.js"></script>
-    <script src="~/mystyle/js/demo/chart-area-demo.js"></script>
-    <script src="~/mystyle/js/demo/chart-pie-demo.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     @RenderSection("Scripts", false)

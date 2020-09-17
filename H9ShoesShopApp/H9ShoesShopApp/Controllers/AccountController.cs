@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace H9ShoesShopApp.Controllers
 {
+  
     public class AccountController : Controller
     {
         private readonly IWebHostEnvironment webHostEnvironment;
@@ -51,7 +52,11 @@ namespace H9ShoesShopApp.Controllers
                     UserName = model.Email,
                     FullName = model.FullName,
                     Gender = model.Gender,
-                    Address = model.Address
+                    Address = model.Address,
+                    DoB = model.DoB,
+                    PhoneNumber = model.PhoneNumber,
+                    Company = model.Company,
+                    Facebook = model.Facebook
                 };
                 var fileName = string.Empty;
                 if (model.Image != null)
@@ -107,13 +112,13 @@ namespace H9ShoesShopApp.Controllers
                     var rolename = await userManager.GetRolesAsync(user);
                     if (rolename.Count > 0)
                     {
-                        return RedirectToAction("Index", "Product");
+                        return RedirectToAction("Index", "Category");
                     }
-                    // if (!string.IsNullOrEmpty(model.returnUrl))
-                    //{
-                    //     return Redirect(model.returnUrl);
-                    //}
-                    return RedirectToAction("Index", "Product");
+                    if (!string.IsNullOrEmpty(model.returnUrl) && rolename.Count ==0)
+                    {
+                        return Redirect(model.returnUrl);
+                    }
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -121,15 +126,16 @@ namespace H9ShoesShopApp.Controllers
                     {
                         return Redirect(model.returnUrl);
                     }
-                    ModelState.AddModelError("", "Invalid login attemp");
+                    ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không tồn tại");
                 }
             };
             return View(model);
         }
         public async Task<IActionResult> Logout()
         {
+
             await signInManager.SignOutAsync();
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
         [HttpGet]
         public IActionResult AccessDenied()

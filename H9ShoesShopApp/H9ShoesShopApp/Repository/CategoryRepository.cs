@@ -14,6 +14,14 @@ namespace H9ShoesShopApp.Models.Repository
         {
             this.context = context;
         }
+
+        public Category ChangeStatus(int id, bool status)
+        {
+            var category = Get(id);
+            category.Status = status;
+            return Edit(category);
+        }
+
         public Category Create(Category category)
         {
             context.Categories.Add(category);
@@ -49,6 +57,11 @@ namespace H9ShoesShopApp.Models.Repository
         public IEnumerable<Category> Gets()
         {
             return context.Categories.ToList();
+        }
+
+        public object showProduct()
+        {
+            throw new NotImplementedException();
         }
     }
 }

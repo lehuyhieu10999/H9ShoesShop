@@ -1,0 +1,92 @@
+﻿@inject SignInManager<ApplicationUser> signInManager
+@model List<User>
+@{
+    ViewBag.Title = "Quản lý người dùng";
+}
+<div class="card shadow mb-4">
+    <div class="card-header row py-3">
+        <div>
+            <h3 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h3>
+        </div>
+        <div class="ml-auto" style="padding-right:30px">
+            <a asp-controller="User" asp-action="Create" class="btn btn-warning" style="width:150px">Tạo mới</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead class="thead-dark" style="text-align:center">
+                    <tr>
+                        <th></th>
+                        <th>Họ và tên</th>
+                        <th>Email</th>
+                        <th>Giới tính</th>
+                        <th>Địa chỉ</th>
+                        <th>Quyền</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align:center">
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        @if (Model != null && Model.Any())
+                        {
+                            @for (int i = 0; i < Model.Count(); i++)
+                            {
+                                @if (Model[i].RoleName != null)
+                                {
+                                    <tr>
+                                        <td>@(i+1)</td>
+                                        <td>@Model[i].FullName</td>
+                                        <td>@Model[i].Email</td>
+                                        <td>@Model[i].Gender</td>
+                                        <td>@Model[i].Address</td>
+                                        <td>@Model[i].RoleName</td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@($"exampleModalLong{@Model[i].UserId}")">
+                                                Xóa
+                                            </button>
+                                            <a type="button" class="btn btn-primary" asp-controller="User" asp-action="Edit" asp-route-id="@Model[i].UserId">
+                                                Cập nhật
+                                            </a>
+                                            <div class="modal fade" id="@($"exampleModalLong{@Model[i].UserId}")" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Xóa người dùng này?</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Bạn chắc chứ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                                            <a type="button" class="btn btn-primary" asp-controller="User" asp-action="Delete" asp-route-id="@Model[i].UserId">Xóa</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').dataTable();
+        });
+    </script>
+}
