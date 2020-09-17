@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace H9ShoesShopApp.ViewModel.Product
+namespace H9ShoesShopApp.ViewModel.Products
 {
     public class ShowAll
     {

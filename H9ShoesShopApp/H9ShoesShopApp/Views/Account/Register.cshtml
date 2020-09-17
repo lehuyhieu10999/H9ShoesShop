@@ -3,115 +3,135 @@
     Layout = "~/Views/Shared/_Register.cshtml";
     ViewBag.Title = "Đăng ký";
 }
-
-<div class="container">
-
-    <div class="card o-hidden border-0 shadow-lg my-5">
-
-        <div class="card-body p-0">  
-            <div class="row">
-                
-                <div class="col-lg-7">
-                    <div class="p-5">
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+<style>
+    .text-danger
+    {
+        color:red;
+    }
+</style>
+<div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins" style="background-image: url('/images/register2.jpg')">
+    <div class="wrapper wrapper--w680">
+        <div class="card card-4">
+            <div class="card-body">
+                <h2 class="title">Đăng ký</h2>
+                <form method="POST" asp-controller="Account" asp-action="Register">
+                    <div class="row row-space">
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label class="label" asp-for="FullName"></label>
+                                <input style="width:550px" class="input--style-4" type="text" asp-for="FullName" />
+                                <span asp-validation-for=" FullName" class="text-danger"></span>
+                            </div>
                         </div>
-                        <form class="user" enctype="multipart/form-data" asp-controller="Account" asp-action="Register" method="post">
-                            <div class="form-group row">
-                                <div class="col-sm-3">
-                                    <label asp-for="FullName"></label>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label class="label" asp-for="DoB"></label>
+                                <div class="input-group-icon">
+                                    <input class="input--style-4 js-datepicker" type="text" readonly asp-for="DoB">
+                                    <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
                                 </div>
-                                <div class="col-sm-9">
-                                    <input asp-for="FullName" class="form-control" />
-                                    <span asp-validation-for="FullName" class="text-danger"></span>
-                                </div>
+                                <span asp-validation-for="DoB" class="text-danger"></span>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-sm-3">
-                                    <label asp-for="Email"></label>
-                                </div>
-                                <div class="col-sm-9">
-                                    <input asp-for="Email" class="form-control" />
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-sm-3">
-                                    <label asp-for="Password"></label>
-                                </div>
-                                <div class="col-sm-9">
-                                    <input asp-for="Password" class="form-control" />
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-sm-3">
-                                    <label asp-for="ConfirmPassword"></label>
-                                </div>
-                                <div class="col-sm-9">
-                                    <input asp-for="ConfirmPassword" class="form-control" />
-                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-sm-3">
-                                    <label asp-for="Address"></label>
-                                </div>
-                                <div class="col-sm-9">
-                                    <input asp-for="Address" class="form-control" />
-                                    <span asp-validation-for="Address" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-sm-3">
-                                    <label asp-for="Gender"></label>
-                                </div>
-                                <div class="col-sm-9" style="display:flex">
-                                    <input style="margin:5px 5px 0px 0px;" type="radio"  name="Gender" value="Nam" asp-for="Gender" /> Nam
-                                    <input style="margin:5px 5px 0px 15px;" type="radio" name="Gender" value="Nữ" asp-for="Gender" /> Nữ                                  
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label class="label" asp-for="Gender"></label>
+                                <div class="p-t-10">
+                                    <label class="radio-container m-r-45">
+                                        Nam
+                                        <input type="radio" checked="checked" name="gender" value="Nam" asp-for="Gender">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-container">
+                                        Nữ
+                                        <input type="radio" name="gender" value="Nữ" asp-for="Gender">
+                                        <span class="checkmark"></span>
+                                    </label>
                                     <span asp-validation-for="Gender" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="row form-group">
-                                <div class="col-sm-3">
-                                    <label>Image</label>
-                                </div>
-                                <div class="col-sm-9">
-                                    <div class="custom-file">
-                                        <input class="custom-file-input"  asp-for="Image">
-                                        <label class="custom-file-label" asp-for="Image" for="customFile">Choose file</label>
-                                        <span asp-validation-for="Image" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="text-center mb-3">
-                                <img id="avatar" src="~/images/Avatar/nonAvatar.jpg" style="width:200px;height:200px" />
-                            </div>
-                            <div asp-validation-summary="All" class="text-danger"></div>
-                            <button type="submit" class="btn btn-primary btn-user btn-block">
-                                Register Account
-                            </button>
-                            <hr>
-                            <a href="index.html" class="btn btn-google btn-user btn-block">
-                                <i class="fab fa-google fa-fw"></i> Register with Google
-                            </a>
-                            <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                            </a>
-                        </form>
-                        <hr>
-                        <div class="text-center">
-                            <a class="small" href="forgot-password.html">Forgot Password?</a>
-                        </div>
-                        <div class="text-center">
-                            <a class="small" href="login.html">Already have an account? Login!</a>
                         </div>
                     </div>
-                </div>
+                    <div class="row row-space">
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label class="label" asp-for="Email"></label>
+                                <input class="input--style-4" type="email" asp-for="Email">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label class="label" asp-for="PhoneNumber"></label>
+                                <input class="input--style-4" type="text" asp-for="PhoneNumber">
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label class="label" asp-for="Password"></label>
+                                <input class="input--style-4" type="password" asp-for="Password">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label class="label" asp-for="ConfirmPassword"></label>
+                                <input class="input--style-4" type="password" asp-for="ConfirmPassword">
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label class="label" asp-for="Company"></label>
+                                <input class="input--style-4" type="email" asp-for="Company">
+                                <span asp-validation-for="Company" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label class="label" asp-for="Facebook"></label>
+                                <input class="input--style-4" type="text" asp-for="Facebook">
+                                <span asp-validation-for="Facebook" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label class="label" asp-for="Address"></label>
+                                <input style="width:550px" class="input--style-4" type="text" asp-for="Address" />
+                                <span asp-validation-for=" Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space" style="margin-left:189px">
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label style="text-align:center" class="label" asp-for="Image"></label>
+                                <img id="avatar" src="~/images/Avatar/nonAvatar.jpg" style="width:200px;height:200px" />
+                                <div style="margin-top:20px">
+                                    <input class="custom-file-input" asp-for="Image" for="customFile" style="width:auto"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="p-t-15">
+                        <button style="margin-left:189px" class="btn btn--radius-2 btn--blue" type="submit">Đăng ký</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
 </div>
 @section Scripts{
     <script>

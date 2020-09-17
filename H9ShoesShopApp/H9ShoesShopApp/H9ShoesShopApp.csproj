@@ -13,6 +13,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\User\Index2.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Error\CategoryNotFound.cshtml" />
+    <None Include="Views\Error\Exception.cshtml" />
+    <None Include="Views\Error\PageNotFound.cshtml" />
+    <None Include="Views\Error\ProductNotFound.cshtml" />
+    <None Include="Views\Error\RoleNotFound.cshtml" />
+    <None Include="Views\Error\UserNotFound.cshtml" />
+    <None Include="Views\User\Create.cshtml" />
+    <None Include="Views\User\Edit.cshtml" />
+    <None Include="Views\User\Index2.cshtml" />
+    <None Include="Views\User\Index.cshtml" />
     <None Include="wwwroot\login\fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
     <None Include="wwwroot\login\fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.woff2" />
     <None Include="wwwroot\login\fonts\font-awesome-4.7.0\less\animated.less" />
@@ -69,9 +83,62 @@
     <None Include="wwwroot\login\vendor\perfect-scrollbar\perfect-scrollbar.min.js" />
     <None Include="wwwroot\login\vendor\select2\select2.js" />
     <None Include="wwwroot\login\vendor\select2\select2.min.js" />
+    <None Include="wwwroot\register\js\global.js" />
+    <None Include="wwwroot\register\vendor\datepicker\daterangepicker.js" />
+    <None Include="wwwroot\register\vendor\datepicker\moment.min.js" />
+    <None Include="wwwroot\register\vendor\font-awesome-4.7\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\register\vendor\font-awesome-4.7\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\register\vendor\jquery\jquery.js" />
+    <None Include="wwwroot\register\vendor\jquery\jquery.min.js" />
+    <None Include="wwwroot\register\vendor\mdi-font\fonts\Material-Design-Iconic-Font.svg" />
+    <None Include="wwwroot\register\vendor\mdi-font\fonts\Material-Design-Iconic-Font.woff2" />
+    <None Include="wwwroot\register\vendor\select2\select2.min.js" />
+    <None Include="wwwroot\theme\js\categories_custom.js" />
+    <None Include="wwwroot\theme\js\contact_custom.js" />
+    <None Include="wwwroot\theme\js\custom.js" />
+    <None Include="wwwroot\theme\js\jquery-3.2.1.min.js" />
+    <None Include="wwwroot\theme\js\single_custom.js" />
+    <None Include="wwwroot\theme\plugins\easing\easing.js" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\animated.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\bordered-pulled.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\core.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\fixed-width.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\font-awesome.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\icons.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\larger.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\list.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\mixins.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\path.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\rotated-flipped.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\screen-reader.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\stacked.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\less\variables.less" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\font-awesome.scss" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\_animated.scss" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\_bordered-pulled.scss" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\_core.scss" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\_fixed-width.scss" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\_icons.scss" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\_larger.scss" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\_list.scss" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\_mixins.scss" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\_path.scss" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\_rotated-flipped.scss" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\_screen-reader.scss" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\_stacked.scss" />
+    <None Include="wwwroot\theme\plugins\font-awesome-4.7.0\scss\_variables.scss" />
+    <None Include="wwwroot\theme\plugins\Isotope\isotope.pkgd.min.js" />
+    <None Include="wwwroot\theme\plugins\jquery-ui-1.12.1.custom\jquery-ui.js" />
+    <None Include="wwwroot\theme\plugins\OwlCarousel2-2.2.1\owl.carousel.js" />
+    <None Include="wwwroot\theme\plugins\themify-icons\fonts\themify.svg" />
+    <None Include="wwwroot\theme\styles\bootstrap4\bootstrap.min.js" />
+    <None Include="wwwroot\theme\styles\bootstrap4\popper.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
