@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 using H9ShoesShopApp.Models.Entities;
 using H9ShoesShopApp.Models.Repository;
 using H9ShoesShopApp.ViewModel.Category;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace H9ShoesShopApp.Controllers
 {
-   
     public class CategoryController : Controller
     {
         private readonly IWebHostEnvironment webHostEnvironment;
@@ -29,7 +27,7 @@ namespace H9ShoesShopApp.Controllers
         }
         public IActionResult Index()
         {
-            var Categories = categoryRepository.Gets();
+            var Categories = categoryRepository.Gets().ToList();
             return View(Categories);
         }
         public ViewResult Create()
@@ -78,14 +76,13 @@ namespace H9ShoesShopApp.Controllers
                 var category = categoryRepository.Get(int.Parse(id));
                 if (category != null && !category.IsDelete)
                 {
-                    var editcategory = new CategoryEdit()
+                    var edit = new CategoryEdit()
                     {
                         ImagePath = category.ImagePath,
                         CategoryName = category.CategoryName,
-                        CategoryId = category.CategoryId,
-                        Status = category.Status
+                        CategoryId = category.CategoryId
                     };
-                    return View(editcategory);
+                    return View(edit);
                 }
                 else
                 {
@@ -109,8 +106,7 @@ namespace H9ShoesShopApp.Controllers
                 {
                     CategoryName = model.CategoryName,
                     CategoryId = model.CategoryId,
-                    ImagePath = model.ImagePath,
-                    Status = model.Status
+                    ImagePath = model.ImagePath
                 };
                 var fileName = string.Empty;
                 if (model.Image != null)
@@ -156,8 +152,10 @@ namespace H9ShoesShopApp.Controllers
         [Route("Category/{id}/{status}")]
         public JsonResult ChangeStatus(int id, bool status)
         {
-            var result = categoryRepository.ChangeStatus(id, status);
-            return Json(new { result });
+            var category = categoryRepository.Get(id);
+            category.Status = status;
+            categoryRepository.Edit(category);
+            return Json(new { category });
         }
     }
 }

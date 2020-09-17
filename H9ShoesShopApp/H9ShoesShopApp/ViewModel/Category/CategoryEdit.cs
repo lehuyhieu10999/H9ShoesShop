@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,6 +16,5 @@ namespace H9ShoesShopApp.ViewModel.Category
         public string CategoryName { get; set; }
         [Display(Name = "Ảnh")]
         public IFormFile Image { get; set; }
-        public bool Status { get; set; }
     }
 }

@@ -55,7 +55,7 @@
                 <option disabled selected>Chọn size</option>
                 @for (var i = 30; i < 45; i++)
                 {
-                    <option value="@i">@i</option>
+                    <option value="@i">i</option>
 
                 }
             </select>
@@ -85,14 +85,7 @@
             <label asp-for="Sale"></label>
         </div>
         <div class="col-sm-10">
-            <select asp-for="Sale" class="custom-select">
-                <option disabled selected>Chọn size</option>
-                @for (var i = 0; i < 99; i++)
-                {
-                    <option value="@i">@i</option>
-
-                }
-            </select>
+            <input asp-for="Sale" type="number" class="form-control" />
             <span asp-validation-for="Sale" class="text-danger"></span>
         </div>
     </div>

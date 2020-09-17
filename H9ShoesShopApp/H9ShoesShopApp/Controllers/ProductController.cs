@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using H9ShoesShopApp.Models.Entities;
 using H9ShoesShopApp.Models.Repository;
-using H9ShoesShopApp.ViewModel.Products;
+using H9ShoesShopApp.ViewModel.Product;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace H9ShoesShopApp.Controllers
 {
-  public class ProductController : Controller
+    public class ProductController : Controller
     {
         private IRepository<Product> productRepository;
         private IRepository<Category> categoryRepository;
@@ -24,21 +25,34 @@ namespace H9ShoesShopApp.Controllers
             this.categoryRepository = categoryRepository;
             this.webHostEnvironment = webHostEnvironment;
         }
-       
+        public IActionResult Index()
+        {
+            List<Product> products = productRepository.Gets().ToList();
+            List<Category> categories = categoryRepository.Gets().ToList();
+            var result = (from p in products
+                          join c in categories on p.CategoryId equals c.CategoryId 
+                          where c.IsDelete == false && p.IsDelete == false
+                          select (new ShowAll()
+                          {
+                              ProductId = p.ProductId,
+                              ProductName = p.ProductName,
+                              Price = p.Price,
+                              CategoryName = c.CategoryName,
+                              ImagePath = p.PathImage,
+                              Status = p.Status,
+                              BrandName = p.Brand
+                          })).ToList();
+            return View(result);
+        }
         [HttpGet]
         [Route("Product/{id}/{status}")]
         public JsonResult ChangeStatus(int id, bool status)
         {
-            var result = productRepository.ChangeStatus(id, status);
-           
-            return Json(new { result });
+            var product = productRepository.Get(id);
+            product.Status = status;
+            productRepository.Edit(product);
+            return Json(new { product });
         }
-        public IActionResult Index()
-        {
-            List<ShowAll> result = (List<ShowAll>)productRepository.showProduct();
-            return View(result);
-        }
-     
         [HttpGet]
         public IActionResult Create()
         {
@@ -90,7 +104,7 @@ namespace H9ShoesShopApp.Controllers
                 var product = productRepository.Get(int.Parse(id));
                 if (product != null && !product.IsDelete)
                 {
-                    var productedit = new ProductEdit()
+                    var edit = new ProductEdit()
                     {
                         ProductId = product.ProductId,
                         ProductName = product.ProductName,
@@ -100,10 +114,9 @@ namespace H9ShoesShopApp.Controllers
                         ImagePath = product.PathImage,
                         Sale = product.Sale,
                         Size = product.Size,
-                        Brand = product.Brand,
-                        Status = product.Status
+                        Brand = product.Brand
                     };
-                    return View(productedit);
+                    return View(edit);
                 }
                 else
                 {
@@ -133,8 +146,7 @@ namespace H9ShoesShopApp.Controllers
                     PathImage = model.ImagePath,
                     Sale = model.Sale,
                     Size = model.Size,
-                    Brand = model.Brand,
-                    Status = model.Status
+                    Brand = model.Brand
                 };
                 var fileName = string.Empty;
                 if (model.Image != null)

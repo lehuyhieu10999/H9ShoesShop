@@ -13,7 +13,5 @@ namespace H9ShoesShopApp.Models.Repository
         T Get(int id);
         T Edit(T t);
         bool Delete(int id);
-        T ChangeStatus(int id, bool status);
-        object showProduct();
     }
 }

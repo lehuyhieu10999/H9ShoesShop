@@ -27,14 +27,6 @@ namespace H9ShoesShopApp.ViewModel.Account
         public string Address { get; set; }
         [Display(Name = "Giới tính")]
         public string Gender { get; set; }
-        [Display(Name = "Ngày sinh")]
-        public string DoB { get; set; }
-        [Display(Name = "Số điện thoại")]
-        public string PhoneNumber { get; set; }
-        [Display(Name = "Cơ quan, công ty")]
-        public string Company { get; set; }
-        public string Facebook { get; set; }
-        [Display(Name = "Ảnh đại diện")]
         public IFormFile Image { get; set; }
     }
 }
