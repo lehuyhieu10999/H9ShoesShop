@@ -21,5 +21,6 @@ namespace H9ShoesShopApp.ViewModel.Products
         public string BrandName { get; set; }
         [Display(Name = "Trạng thái")]
         public bool Status { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

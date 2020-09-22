@@ -1,0 +1,172 @@
+﻿@model CartItem
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var categoryname = ViewBag.CategoryName;
+    var products = ViewBag.Products as List<Product>;
+    var product = ViewBag.Product as Product;
+    var categoryid = ViewBag.categoryid;
+    @functions
+        {
+        public string currency(float money1)
+        {
+            var vietnam = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+            string money2 = String.Format(vietnam, "{0:c}", money1);
+            int start = money2.Length - 1;
+            return money2.Replace(",00", "");
+        }
+    }
+}
+
+
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a><i class="fa fa-angle-right" aria-hidden="true"></i>@categoryname</a></li>
+                    <li class="active"><a><i class="fa fa-angle-right" aria-hidden="true"></i>@product.ProductName</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-lg-5">
+            <div>
+                <div>
+                    <div>
+                        <div class="single_product_image_background" style="background-image:url(/images/Product/@product.PathImage);width:500px;height:420px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5" style="margin-left:150px">
+            <div class="product_details">
+                <div class="product_details_title">
+                    <input hidden id="@product.ProductId">
+                    <h2>@product.ProductName</h2>
+                    <p>@product.Description</p>
+                    <p>Thương hiệu: @product.Brand</p>
+                    <p>Size: @product.Size</p>
+
+                </div>
+                <div class="free_delivery d-flex flex-row align-items-center justify-content-center">
+                    <span class="ti-truck"></span><span>Miễn phí vận chuyển</span>
+                </div>
+                <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center" style="width:50px;height:30px"><span>-@product.Sale%</span></div>
+                <div class="original_price">@currency(@product.Price)*</div>
+                <div class="product_price">@currency(@product.Price - @product.Price * @product.Sale / 100)</div>
+                <ul class="star_rating">
+                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                    <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                </ul>
+                <div class="product_color">
+                    <span>Chọn màu:</span>
+                    <ul>
+                        <li style="background: #e54e5d"></li>
+                        <li style="background: #252525"></li>
+                        <li style="background: #60b3f3"></li>
+                    </ul>
+                </div>
+                <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
+                    <span>Số lượng:</span>
+                    <div class="quantity_selector">
+                        <span class="minus" onclick="del();"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                        <input readonly type="number" min="1" id="inc" value="1" style="width:60px;text-align:center">
+                        <span class="plus" onclick="plus();"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                    </div>
+                    <div><a style="margin-left:20px" id="giohang" class="btn btn-danger" onclick="cart.BuyProduct(@product.ProductId)">  THÊM VÀO GIỎ </a></div>
+                    <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="best_sellers">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <div class="section_title new_arrivals_title">
+                    <h2>Sản phẩm tương tự</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="product_slider_container">
+                    <div class="owl-carousel owl-theme product_slider">
+
+                        <!-- Slide 1 -->
+                        @foreach (var item in products)
+                        {
+                            @if (item.Status && !item.IsDelete && item.CategoryId == categoryid)
+                            {
+                                <div class="owl-item product_slider_item">
+                                    <div class="product-item">
+                                        <div class="product discount">
+                                            <div class="product_image">
+                                                <img style="width:213px;height:213px" src="~/images/Product/@item.PathImage">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$@item.Sale%</span></div>
+                                            <div class="product_info" style="margin-bottom:-15px">
+                                                <h6 class="product_name" style="margin-top:10px"><a href="single.html">@item.ProductName</a></h6>
+                                                <div class="product_price" style="margin-top:-10px">@currency(item.Price - item.Price * item.Sale / 100)<span>@currency(item.Price)</span></div>
+                                            </div>
+                                            <div style="margin-left:30px;margin-top:20px" class="red_button add_to_cart_button"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">mua ngay</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            continue;
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>       
+        var i = 1;
+        function plus() {
+            i++;
+            document.getElementById('inc').value = i;
+        }
+        function del() {
+            if (i >= 2) {
+                i--;
+                document.getElementById('inc').value = i;
+            }
+        }
+    </script>
+    <script>
+        var cart = {};
+        cart.BuyProduct = function (productId) {
+            var quantity = $("#inc").val();
+            $.ajax({
+                url: `/Cart/AddItem/${productId}/${quantity}`,
+                method: "GET",
+                contentType: 'json', 
+                success: function () {
+                    window.location.replace("https://localhost:44395/Cart");
+                    
+                }
+            });
+        }
+
+    </script>>
+    }
+
+

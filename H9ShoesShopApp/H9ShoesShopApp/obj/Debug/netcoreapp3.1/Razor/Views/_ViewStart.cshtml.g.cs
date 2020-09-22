@@ -62,6 +62,13 @@ using Microsoft.AspNetCore.Identity;
 #line hidden
 #nullable disable
 #nullable restore
+#line 8 "C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\Views\_ViewImports.cshtml"
+using H9ShoesShopApp.Models.Repository;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 9 "C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\Views\_ViewImports.cshtml"
 using H9ShoesShopApp.ViewModel;
 
@@ -76,7 +83,7 @@ using H9ShoesShopApp.Models.Identities;
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"7091c65830b0329e613be026ede8a57552863778", @"/Views/_ViewStart.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"9865c9e79f371fae1d5d84fbe5d8c2494b2c460e", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"17324ea3e4f138b3c9ff62eb6bcf18b6f5c263b4", @"/Views/_ViewImports.cshtml")]
     public class Views__ViewStart : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         #pragma warning disable 1998

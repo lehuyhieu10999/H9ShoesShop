@@ -10,5 +10,6 @@ namespace H9ShoesShopApp.ViewModel
     {
         public List<Product> products { get; set; }
         public List<Product> productssale { get; set; }
+        public Product Product { get; set; }
     }
 }

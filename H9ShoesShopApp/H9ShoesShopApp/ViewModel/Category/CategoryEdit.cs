@@ -18,5 +18,10 @@ namespace H9ShoesShopApp.ViewModel.Category
         [Display(Name = "Ảnh")]
         public IFormFile Image { get; set; }
         public bool Status { get; set; }
+
+        public static implicit operator CategoryEdit(Models.Entities.Category v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

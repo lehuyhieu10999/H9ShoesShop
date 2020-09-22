@@ -114,11 +114,15 @@ namespace H9ShoesShopApp.Controllers
                     {
                         return RedirectToAction("Index", "Category");
                     }
-                    if (!string.IsNullOrEmpty(model.returnUrl) && rolename.Count ==0)
+                    else if (!string.IsNullOrEmpty(model.returnUrl) && rolename.Count ==0)
                     {
                         return Redirect(model.returnUrl);
                     }
-                    return RedirectToAction("Index", "Home");
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    
                 }
                 else
                 {

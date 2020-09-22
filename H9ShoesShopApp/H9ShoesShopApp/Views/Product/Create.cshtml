@@ -19,7 +19,7 @@
                     @if (!category.IsDelete)
                     {
                         <option value="@category.CategoryId">@category.CategoryName</option>
-}
+                    }
                     continue;
                 }
             </select>
@@ -86,7 +86,7 @@
         </div>
         <div class="col-sm-10">
             <select asp-for="Sale" class="custom-select">
-                <option disabled selected>Chọn size</option>
+                <option disabled selected>Chọn mức khuyến mãi</option>
                 @for (var i = 0; i < 99; i++)
                 {
                     <option value="@i">@i</option>
@@ -111,6 +111,7 @@
     <div class="text-center mb-3">
         <img id="avatar" src="~/images/Product/nonimage.png" style="width:300px;height:300px" />
     </div>
+    <div style="margin-left: 200px;" asp-validation-summary="All" class="text-danger"></div>
     <div class="row form-group justify-content-center">
         <button type="submit" class="btn btn-primary form-group mr-5">Tạo mới</button>
         <a asp-controller="Product" asp-action="Index" class="btn btn-warning form-group">Trở lại</a>

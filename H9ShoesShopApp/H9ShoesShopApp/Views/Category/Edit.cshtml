@@ -24,7 +24,7 @@
         </div>
         <div class="col-sm-10">
             <div class="custom-file">
-                <input class="custom-file-input" asp-for="Image" >
+                <input class="custom-file-input" asp-for="Image">
                 <label class="custom-file-label" for="customFile"></label>
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
@@ -33,6 +33,7 @@
     <div class="text-center mb-3">
         <img id="avatar" src="~/images/Category/@Model.ImagePath" style="width:300px;height:300px" asp-append-version="true" />
     </div>
+    <div style="margin-left: 200px;" asp-validation-summary="All" class="text-danger"></div>
     <div class="row form-group justify-content-center">
         <button type="submit" class="btn btn-primary form-group mr-5">Cập nhật</button>
         <a asp-controller="Category" asp-action="Index" class="btn btn-warning form-group">Trở lại</a>

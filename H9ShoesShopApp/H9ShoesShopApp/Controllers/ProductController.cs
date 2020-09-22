@@ -12,17 +12,16 @@ namespace H9ShoesShopApp.Controllers
 {
   public class ProductController : Controller
     {
-        private IRepository<Product> productRepository;
-        private IRepository<Category> categoryRepository;
-        private IWebHostEnvironment webHostEnvironment;
+        private IProductRepository productRepository;
+        private ICategoryRepository categoryRepository;
+        
 
-        public ProductController(IRepository<Product> productRepository,
-                                IRepository<Category> categoryRepository,
-                               IWebHostEnvironment webHostEnvironment)
+        public ProductController(IProductRepository productRepository,
+                                ICategoryRepository categoryRepository)
         {
             this.productRepository = productRepository;
             this.categoryRepository = categoryRepository;
-            this.webHostEnvironment = webHostEnvironment;
+           
         }
        
         [HttpGet]
@@ -33,58 +32,73 @@ namespace H9ShoesShopApp.Controllers
            
             return Json(new { result });
         }
+        [HttpGet]
+        
+        public IActionResult UndoDelete(int id)
+        {
+            if (productRepository.UndoDelete(id) >0)
+            {
+                return RedirectToAction("RecycleBin", "Product");
+            }
+            return RedirectToAction("RecycleBin", "Product");
+
+        }
         public IActionResult Index()
         {
             List<ShowAll> result = (List<ShowAll>)productRepository.showProduct();
             return View(result);
         }
-     
+        public IActionResult RecycleBin()
+        {
+            List<ShowAll> result = (List<ShowAll>)productRepository.showProduct2();
+            return View(result);
+        }
+
+
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.Categories = categoryRepository.Gets().ToList();
+            ViewBag.Categories = categoryRepository.Gets();
             return View();
         }
         [HttpPost]
         public IActionResult Create(ProductCreate model)
         {
-
             if (ModelState.IsValid)
             {
-                var product = new Product()
+                ViewBag.Categories = categoryRepository.Gets();
+                if (productRepository.CreateProduct(model) > 0)
+                    return RedirectToAction("Index", "Product");
+                else
+                    ModelState.AddModelError("", "Tên này đã tồn tại, vui lòng thử lại tên khác!");
+            }
+            return View();
+        }
+        
+        [HttpPost]
+        public IActionResult Edit(ProductEdit model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (productRepository.Update(model) > 0)
                 {
-                    ProductName = model.ProductName,
-                    Description = model.Description,
-                    Sale = model.Sale,
-                    Size = model.Size,
-                    Price = model.Price,
-                    CategoryId = model.CategoryId,
-                    IsDelete = false,
-                    Status = false,
-                    Brand = model.Brand
-                };
-
-                var fileName = string.Empty;
-                if (model.Image != null)
-                {
-                    string uploadFolder = Path.Combine(webHostEnvironment.WebRootPath, "images/Product");
-                    fileName = $"{Guid.NewGuid()}_{model.Image.FileName}";
-                    var filePath = Path.Combine(uploadFolder, fileName);
-                    using (var fs = new FileStream(filePath, FileMode.Create))
-                    {
-                        model.Image.CopyTo(fs);
-                    }
+                    return RedirectToAction("Index", "Product");
                 }
-                product.PathImage = fileName;
-                productRepository.Create(product);
-                return RedirectToAction("Index", "Product");
+            }
+            return View();
+        }
+        public IActionResult Delete(int id)
+        {
+            if (productRepository.Delete(id))
+            {
+                return RedirectToAction("Index");
             }
             return View();
         }
         [HttpGet]
         public IActionResult Edit(string id)
         {
-            ViewBag.Categories = categoryRepository.Gets().ToList();
+            ViewBag.Categories = categoryRepository.Gets();
             try
             {
                 var product = productRepository.Get(int.Parse(id));
@@ -116,63 +130,6 @@ namespace H9ShoesShopApp.Controllers
                 ViewBag.id = id;
                 return View("~/Views/Error/ProductNotFound.cshtml");
             }
-        }
-
-        [HttpPost]
-        public IActionResult Edit(ProductEdit model)
-        {
-            if (ModelState.IsValid)
-            {
-                var product = new Product()
-                {
-                    ProductId = model.ProductId,
-                    ProductName = model.ProductName,
-                    CategoryId = model.CategoryId,
-                    Description = model.Description,
-                    Price = model.Price,
-                    PathImage = model.ImagePath,
-                    Sale = model.Sale,
-                    Size = model.Size,
-                    Brand = model.Brand,
-                    Status = model.Status
-                };
-                var fileName = string.Empty;
-                if (model.Image != null)
-                {
-                    string uploadFolder = Path.Combine(webHostEnvironment.WebRootPath, "images/Product");
-                    fileName = $"{Guid.NewGuid()}_{model.Image.FileName}";
-                    var filePath = Path.Combine(uploadFolder, fileName);
-                    using (var fs = new FileStream(filePath, FileMode.Create))
-                    {
-                        model.Image.CopyTo(fs);
-                    }
-                    product.PathImage = fileName;
-                    if (!string.IsNullOrEmpty(model.ImagePath))
-                    {
-                        string delFile = Path.Combine(webHostEnvironment.WebRootPath,
-                                            "images/Product", model.ImagePath);
-                        System.IO.File.Delete(delFile);
-                    }
-                }
-                if(model.Image == null)
-                {
-                    fileName = model.ImagePath;
-                }
-                var editEmp = productRepository.Edit(product);
-                if (editEmp != null)
-                {
-                    return RedirectToAction("Index");
-                }
-            }
-            return View();
-        }
-        public IActionResult Delete(int id)
-        {
-            if (productRepository.Delete(id))
-            {
-                return RedirectToAction("Index");
-            }
-            return View();
         }
     }
 }

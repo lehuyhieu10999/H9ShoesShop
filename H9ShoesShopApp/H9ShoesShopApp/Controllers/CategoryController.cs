@@ -16,18 +16,23 @@ namespace H9ShoesShopApp.Controllers
     public class CategoryController : Controller
     {
         private readonly IWebHostEnvironment webHostEnvironment;
-        private readonly IRepository<Category> categoryRepository;
-        public readonly IRepository<Product> productRepository;
+        private readonly ICategoryRepository categoryRepository;
+        public readonly IProductRepository productRepository;
 
         public CategoryController(IWebHostEnvironment webHostEnvironment,
-            IRepository<Product> productRepository,
-            IRepository<Category> categoryRepository)
+            IProductRepository productRepository,
+            ICategoryRepository categoryRepository)
         {
             this.webHostEnvironment = webHostEnvironment;
             this.productRepository = productRepository;
             this.categoryRepository = categoryRepository;
         }
         public IActionResult Index()
+        {
+            var Categories = categoryRepository.Gets();
+            return View(Categories);
+        }
+        public IActionResult RecycleBin()
         {
             var Categories = categoryRepository.Gets();
             return View(Categories);
@@ -40,32 +45,14 @@ namespace H9ShoesShopApp.Controllers
         public IActionResult Create(CategoryCreate model)
         {
             if (ModelState.IsValid)
-            {
-                var category = new Category()
+            { 
+                if (categoryRepository.CreateCategory(model) > 0)
                 {
-                    CategoryName = model.CategoryName,
-                    IsDelete = false,
-                    Status = true
-                };
-                var fileName = string.Empty;
-                if (model.CategoryImage != null)
-                {
-                    string uploadFolder = Path.Combine(webHostEnvironment.WebRootPath, "images/Category");
-                    fileName = $"{Guid.NewGuid()}_{model.CategoryImage.FileName}";
-                    var filePath = Path.Combine(uploadFolder, fileName);
-                    using (var fs = new FileStream(filePath, FileMode.Create))
-                    {
-                        model.CategoryImage.CopyTo(fs);
-                    }
+                    ViewBag.Categories = categoryRepository.Gets();
+                    return RedirectToAction("Index", "Category");
                 }
-                if(model.CategoryImage == null)
-                {
-                    fileName = "~/images/Category/nonCat.jpg";
-                }
-                category.ImagePath = fileName;
-                categoryRepository.Create(category);
-                ViewBag.Categories = categoryRepository.Gets();
-                return RedirectToAction("Index", "Home");
+                else  ModelState.AddModelError("", "Tên này đã tồn tại, vui lòng chọn tên khác");
+
             }
             ViewBag.Categories = categoryRepository.Gets();
             return View();
@@ -105,41 +92,11 @@ namespace H9ShoesShopApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var category = new Category()
-                {
-                    CategoryName = model.CategoryName,
-                    CategoryId = model.CategoryId,
-                    ImagePath = model.ImagePath,
-                    Status = model.Status
-                };
-                var fileName = string.Empty;
-                if (model.Image != null)
-                {
-                    string uploadFolder = Path.Combine(webHostEnvironment.WebRootPath, "images/Category");
-                    fileName = $"{Guid.NewGuid()}_{model.Image.FileName}";
-                    var filePath = Path.Combine(uploadFolder, fileName);
-                    using (var fs = new FileStream(filePath, FileMode.Create))
-                    {
-                        model.Image.CopyTo(fs);
-                    }
-                    category.ImagePath = fileName;
-                    if (!string.IsNullOrEmpty(model.ImagePath))
-                    {
-                        string delFile = Path.Combine(webHostEnvironment.WebRootPath,
-                                            "images/Category", model.ImagePath);
-                        System.IO.File.Delete(delFile);
-                    }
-                }
-                else
-                {
-                    fileName = model.ImagePath;
-                }
-                category.ImagePath = fileName;
-                var editEmp = categoryRepository.Edit(category);
-                if (editEmp != null)
+                if (categoryRepository.UpdateCategory(model) > 0)
                 {
                     return RedirectToAction("Index", "Category");
                 }
+                else ModelState.AddModelError("", "Tên này đã tồn tại, vui lòng chọn tên khác");
             }
             return View();
         }
@@ -158,6 +115,15 @@ namespace H9ShoesShopApp.Controllers
         {
             var result = categoryRepository.ChangeStatus(id, status);
             return Json(new { result });
+        }
+        public IActionResult UndoDelete(int id)
+        {
+            if (categoryRepository.UndoDelete(id) > 0)
+            {
+                return RedirectToAction("RecycleBin", "Category");
+            }
+            return RedirectToAction("RecycleBin", "Product");
+
         }
     }
 }

@@ -5,76 +5,74 @@
 
 }
 <div class="container-fluid">
-    <div class="card shadow mb-4">
-        <div class="card-header py-3" style="display:flex">
-            <div>
-                <h3 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h3>
-            </div>
-            <div class="ml-auto" style="padding-right:30px">
-                <a asp-controller="Category" asp-action="Create" class="btn btn-warning" style="width:150px">Tạo mới</a>
-            </div>
+    <div class="card-header row py-3">
+        <div>
+            <h3 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h3>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead style="text-align:center">
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Loại</th>
-                            <th scope="col">Ảnh</th>
-                            <th scope="col">Status</th>
-
-                            <th scope="col">Công cụ</th>
-                        </tr>
-                    </thead>
-                    <tbody style="text-align:center">
-                        @foreach (var item in Model)
+        <div class="ml-md-auto" style="padding-right:30px">
+            <a asp-controller="Category" asp-action="Create" class="btn btn-warning" style="width:150px"><i class="fas fa-plus-square"></i>  Tạo mới</a>
+        </div>
+        <div class="ml-auto" style="padding-right:30px">
+            <a asp-controller="Category" asp-action="RecycleBin" class="btn btn-danger" style="width:150px"><i class="fas fa-trash"></i>  Thùng rác</a>
+        </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead style="text-align:center">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Loại</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col">Công cụ</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align:center">
+                    @foreach (var item in Model)
+                    {
+                        if (!item.IsDelete)
                         {
-                            if (!item.IsDelete)
-                            {
-                                <tr class="fo">
-                                    <td scope="row">@item.CategoryId</td>
-                                    <td scope="col">@item.CategoryName</td>
-                                    <td scope="col"><img src="~/images/Category/@item.ImagePath" width="200" height="100" /></td>
-                                    <td><input asp-for="@item.Status" onclick="site.ChangeStatus(@item.CategoryId,this)" /></td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@($"exampleModalLong{@item.CategoryId}")">
-                                            Xóa
-                                        </button>
-                                        <a type="button" class="btn btn-primary" asp-controller="Category" asp-action="Edit" asp-route-id="@item.CategoryId">
-                                            Cập nhật
-                                        </a>
-                                        <div class="modal fade" id="@($"exampleModalLong{@item.CategoryId}")" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLongTitle">Xóa loại này?</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Bạn chắc chứ?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                                        <a type="button" class="btn btn-danger" asp-controller="Category" asp-action="Delete" asp-route-id="@item.CategoryId">Xóa</a>
-                                                    </div>
+                            <tr class="fo">
+                                <td scope="row" id="idcate">@item.CategoryId</td>
+                                <td scope="col">@item.CategoryName</td>   
+                                <td><input asp-for="@item.Status" onclick="site.ChangeStatus(@item.CategoryId, this)"  /></td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@($"exampleModalLong{@item.CategoryId}")">
+                                        Xóa
+                                    </button>
+                                    <a type="button" class="btn btn-primary" asp-controller="Category" asp-action="Edit" asp-route-id="@item.CategoryId">
+                                        Cập nhật
+                                    </a>
+                                    <div class="modal fade" id="@($"exampleModalLong{@item.CategoryId}")" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Xóa @item.CategoryName?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Bạn chắc chứ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                                    <a type="button" class="btn btn-danger" asp-controller="Category" asp-action="Delete" asp-route-id="@item.CategoryId">Xóa</a>
                                                 </div>
                                             </div>
                                         </div>
-                                    </td>
-                                </tr>
-                            }
-                            else continue;
+                                    </div>
+                                </td>
+                            </tr>
                         }
-                    </tbody>
-                </table>
-            </div>
+                        else continue;
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
-
 </div>
+</div>
+
 
 
 
@@ -86,13 +84,23 @@
             $('#dataTable').dataTable();
         });
         site.ChangeStatus = function (id, input) {
-            $.ajax({
-                url: `/Category/${id}/${input.checked}`,
-                method: "GET",
-                dataType: "json",
-            });
+            var result = confirm('Bạn muốn thay đổi trạng thái của mặt hàng có ID = ' + id)
+            if (result) {
+                console.log(result)
+                $.ajax({
+                    url: `/Category/${id}/${input.checked}`,
+                    method: "GET",
+                    dataType: "json",
+                    success: function () {
+                        alert('Thành công!');
+                    },
+
+                });
+            } else {
+                input.checked = !input.checked;
+                alert("Đã hủy")
+            };
         };
     </script>
-
 }
 
