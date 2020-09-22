@@ -1,66 +1,157 @@
-﻿@model List<CartItem>
+﻿@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+@model List<CartItem>
 @{
     ViewBag.Title = "Thanh toán";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = await userManager.GetUserAsync(User);
+    IList<string> roles = new List<string>();
+    if (user != null)
+    {
+        var userin = Task.Run(async () => await userManager.FindByIdAsync(user.Id)).Result;
+        roles = Task.Run(async () => await userManager.GetRolesAsync(userin)).Result;
+    }
 }
-<div class="content">
-    <div class="section group">
-        @if (Model.Count >= 0)
-        {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <td>Mã SP</td>
-                        <td>Tên SP</td>
-                        <td>Ảnh SP</td>
-                        <td>Số lượng</td>
-                        <td>Đơn giá</td>
-                        <td>Thành tiền</td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
+
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col">
+            <div class="card-body">
+                <div class="table-responsive">
+                    @if (Model.Count > 0)
                     {
-                        <tr>
-                            <td>@item.Product.ProductId</td>
-                            <td>@item.Product.ProductName</td>
-                            <td><img src="@item.Product.PathImage" width="100" /></td>
-                            <td><input type="text" class="txtQuantity" data-id="@item.Product.ProductId" value="@item.Quantity" /></td>
-                            <td>@item.Product.Price.ToString("N0")</td>
-                            <td>@((item.Product.Price* item.Quantity).ToString("N0"))</td>
-                            <td><a href="#" data-id="@item.Product.ProductId" class="btn-delete">Xoá</a></td>
-                        </tr>
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead class="thead-dark" style="text-align:center">
+                                <tr>
+                                    <td>Mã SP</td>
+                                    <td>Tên SP</td>
+                                    <td>Ảnh SP</td>
+                                    <td>Số lượng</td>
+                                    <td>Đơn giá</td>
+                                    <td>Thành tiền</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody style="text-align:center">
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+
+                                        <td>@item.Product.ProductId</td>
+                                        <td>@item.Product.ProductName</td>
+                                        <td><img src="~/images/Product/@item.Product.PathImage" width="100" /></td>
+                                        <td>@item.Quantity</td>
+                                        <td>@currency(item.Product.Price - item.Product.Price * item.Product.Sale / 100)</td>
+                                        <td>@currency((item.Product.Price - item.Product.Price * item.Product.Sale / 100) * item.Quantity)</td>
+
+                                        <td><a href="#" data-id="@item.Product.ProductId" class="btn-delete">Xoá</a></td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
                     }
 
-                </tbody>
-            </table>
-        }
-
-    </div>
-    <div class="section group">
-        <div class="col-md-6">
-            @using (Html.BeginForm("Payment", "Cart", FormMethod.Post))
-            {
-                <div class="form-group">
-                    <label>Người nhận</label>
-                    <input name="shipName" class="form-control" />
                 </div>
-                <div class="form-group">
-                    <label>Điện thoại</label>
-                    <input name="mobile" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Địa chỉ</label>
-                    <input name="address" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input name="email" class="form-control" />
-                </div>
-                <button type="submit" class="btn">Gửi đơn hàng</button>
-            }
+            </div>
         </div>
+    </div>
 
+    <div class="row">
+        <div class="section group">
+            <div class="col-md-6">
+                <form id="thanhtoan">
+                    @if (signInManager.IsSignedIn(User))
+                    {
+
+                        <div class="form-group">
+                            <label>Người nhận</label>
+                            <input name="shipName" class="form-control" id="nguoinhan" value="@user.FullName" />
+                        </div>
+                        <div class="form-group">
+                            <label>Điện thoại</label>
+                            <input name="mobile" class="form-control" id="dienthoai" value="@user.PhoneNumber" />
+                        </div>
+                        <div class="form-group">
+                            <label>Địa chỉ</label>
+                            <input name="address" class="form-control" id="diachi" value="@user.Address" />
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input name="email" class="form-control" id="emai" value="@user.Email" />
+                        </div>
+                        <button type="button" class="btn" id="btnSave">Gửi đơn hàng</button>
+
+                    }
+                    else
+                    {
+
+                        <div class="form-group">
+                            <label>Người nhận</label>
+                            <input name="shipName" class="form-control" id="nguoinhan" />
+                        </div>
+                        <div class="form-group">
+                            <label>Điện thoại</label>
+                            <input name="mobile" class="form-control" id="dienthoai" />
+                        </div>
+                        <div class="form-group">
+                            <label>Địa chỉ</label>
+                            <input name="address" class="form-control" id="diachi" />
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input name="email" class="form-control" id="emai" />
+                        </div>
+                        <button type="button" class="btn" id="btnSave">Gửi đơn hàng</button>
+
+                    }
+                </form>
+            </div>
+
+        </div>
     </div>
 </div>
+<style>
+    .form-control {
+        width: 500px;
+    }
+</style>
+@section Scripts {
+    <script>
+        @functions
+        {
+        public string currency(float money1)
+        {
+            var vietnam = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+            string money2 = String.Format(vietnam, "{0:c}", money1);
+            int start = money2.Length - 1;
+            return money2.Replace(",00", "");
+        }
+    }
+
+        $(document).ready(function () {
+            $("#btnSave").click(function (e) {
+                var valdata = $("#thanhtoan").serialize();
+                //to get alert popup
+                $.ajax(
+                    {
+                        type: "POST", //HTTP POST Method
+                        url: "/Cart/Payment", // Controller/View
+                        dataType: "json",
+                        data: valdata,
+
+                        success: function () {
+                            alert("Đặt hàng thành công!! Cảm ơn đã ủng hộ chúng tôi <3")
+                            window.location.replace("https://localhost:44395/Home/Index");
+
+                        }
+                    });
+
+            });
+        });
+
+
+
+    </script>
+}

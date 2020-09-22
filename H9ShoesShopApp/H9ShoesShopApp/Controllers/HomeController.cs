@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using H9ShoesShopApp.ViewModel;
 using System;
 using H9ShoesShopApp.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace H9ShoesShopApp.Controllers
 {
@@ -30,8 +31,7 @@ namespace H9ShoesShopApp.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-
-            HttpContext.Session.SetObjectAsJson("CartSession",new List<CartItem>());
+          var cart =  HttpContext.Session.GetObjectFromJson<List<CartItem>>("CartSession");
 
             List<Product> products = productRepository.Gets().Take(20).ToList();
             List<Product> productsale = (from product in productRepository.Gets() 
@@ -43,6 +43,7 @@ namespace H9ShoesShopApp.Controllers
                productssale = productsale
             };
             ViewBag.Categories = GetCategories();
+            ViewBag.cart = cart;
             return View(model);
         }
 
@@ -65,23 +66,7 @@ namespace H9ShoesShopApp.Controllers
             ViewBag.categoryid = categoryid;
             return View();
         }
-        //public IActionResult Detail(int id)
-        //{
-        //    Product product = productRepository.Get(id);
-        //    if (product == null)
-        //    {
-        //        return View("~/Views/Error/ProductNotFound.cshtml", id);
-        //    }
-        //    List<Product> products = (from p in productRepository.Gets() where p.CategoryId == p.CategoryId select p).Take(10).ToList();
-        //    var model = new HomeView()
-        //    {
-        //        products = products,
-        //        Product = product
-        //    };
-        //    List<Category> categories = GetCategories();
-        //    ViewBag.Categories = categories;
-        //    return View(model);
-        //}
+        
         [HttpPost]
         [Route("Home/Search/{searchString}")]
         public ActionResult Search(string searchString)

@@ -46,13 +46,11 @@ namespace H9ShoesShopApp.Controllers
             }
             return View(list);
         }
-        public JsonResult DeleteAll()
+        [AllowAnonymous]
+        public IActionResult DeleteAll()
         {
             HttpContext.Session.SetObjectAsJson(CartSession, null);
-            return Json(new
-            {
-                status = true
-            });
+            return RedirectToAction("Index", "Cart");
         }
         [AllowAnonymous]
         public JsonResult Delete(int id)
@@ -65,26 +63,26 @@ namespace H9ShoesShopApp.Controllers
                 status = true
             });
         }
-        [AllowAnonymous]
-        public JsonResult Update(string cartModel)
-        {
-            var jsonCart = new JavaScriptSerializer().Deserialize<List<CartItem>>(cartModel);
-            var sessionCart = HttpContext.Session.GetObjectFromJson<List<CartItem>>(CartSession);
+        //[AllowAnonymous]
+        //public JsonResult Update(string cartModel)
+        //{
+        //    var jsonCart = new JavaScriptSerializer().Deserialize<List<CartItem>>(cartModel);
+        //    var sessionCart = HttpContext.Session.GetObjectFromJson<List<CartItem>>(CartSession);
 
-            foreach (var item in sessionCart)
-            {
-                var jsonItem = jsonCart.SingleOrDefault(x => x.Product.ProductId == item.Product.ProductId);
-                if (jsonItem != null)
-                {
-                    item.Quantity = jsonItem.Quantity;
-                }
-            }
-            HttpContext.Session.SetObjectAsJson(CartSession, sessionCart);
-            return Json(new
-            {
-                status = true
-            });
-        }
+        //    foreach (var item in sessionCart)
+        //    {
+        //        var jsonItem = jsonCart.SingleOrDefault(x => x.Product.ProductId == item.Product.ProductId);
+        //        if (jsonItem != null)
+        //        {
+        //            item.Quantity = jsonItem.Quantity;
+        //        }
+        //    }
+        //    HttpContext.Session.SetObjectAsJson(CartSession, sessionCart);
+        //    return Json(new
+        //    {
+        //        status = true
+        //    });
+        //}
         [AllowAnonymous]
         [Route("Cart/AddItem/{productId}/{quantity}")]
         public JsonResult AddItem(int productId, int quantity)
@@ -97,14 +95,15 @@ namespace H9ShoesShopApp.Controllers
                 var list = cart;
                 if (list.Exists(x => x.Product.ProductId == productId))
                 {
-
                     foreach (var item in list)
                     {
                         if (item.Product.ProductId == productId)
                         {
                             item.Quantity += quantity;
-                        }
+                        }   
                     }
+                    HttpContext.Session.SetObjectAsJson(CartSession, cart);
+                    return Json(cart.Count);
                 }
                 else
                 {
@@ -113,10 +112,9 @@ namespace H9ShoesShopApp.Controllers
                     item.ProductId = product.ProductId;
                     item.Quantity = quantity;
                     cart.Add(item);
-                    
-                }
-                HttpContext.Session.SetObjectAsJson(CartSession, cart);
-                
+                    HttpContext.Session.SetObjectAsJson(CartSession, cart);
+                    return Json(cart.Count);
+                } 
             }
             else
             {
@@ -127,13 +125,9 @@ namespace H9ShoesShopApp.Controllers
                 var list = new List<CartItem>();
                 list.Add(item);
                 HttpContext.Session.SetObjectAsJson(CartSession, list);
-                
-            }
-
-            return Json(new
-            {
-                status = true
-            });
+                return Json(list.Count);
+            } 
+            
         }
         [HttpGet]
         [AllowAnonymous]
@@ -150,7 +144,7 @@ namespace H9ShoesShopApp.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Payment(string shipName, string mobile, string address, string email)
+        public JsonResult Payment(string shipName, string mobile, string address, string email)
         {
             var order = new Order();
             order.CreatedDate = DateTime.Now.ToString("dd/MM/yyyy");
@@ -180,8 +174,9 @@ namespace H9ShoesShopApp.Controllers
             {
                 ModelState.AddModelError("", "Something went wrong, try it later!");
             }
-            return RedirectToAction("Success","Cart");
-        }
+             var error = "Too many failed login attempts. Please try again later.";
+            return Json(String.Format("'Success':'false','Error':'{0}'", error));  
+    }
 
         [AllowAnonymous]
         public ActionResult Success()

@@ -48,10 +48,10 @@ namespace H9ShoesShopApp
             services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
-                options.Cookie.IsEssential = true;
+            services.AddDistributedMemoryCache();           
+            services.AddSession(cfg => {                    
+                cfg.Cookie.Name = "Huyhieu";            
+                cfg.IdleTimeout = new TimeSpan(0, 60, 0);   
             });
         }
 
@@ -74,10 +74,11 @@ namespace H9ShoesShopApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
+            app.UseSession();
             app.UseRouting();
             
             app.UseAuthorization();
-            app.UseSession();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

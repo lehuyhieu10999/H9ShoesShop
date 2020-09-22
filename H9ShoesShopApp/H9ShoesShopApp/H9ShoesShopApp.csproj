@@ -14,6 +14,10 @@
     <Compile Remove="Migrations\20200920092913_update.Designer.cs" />
     <Compile Remove="Migrations\20200922022800_update.cs" />
     <Compile Remove="Migrations\20200922022800_update.Designer.cs" />
+    <Compile Remove="Migrations\20200922155758_update.cs" />
+    <Compile Remove="Migrations\20200922155758_update.Designer.cs" />
+    <Compile Remove="Migrations\20200922155935_AlterOrderTables.cs" />
+    <Compile Remove="Migrations\20200922155935_AlterOrderTables.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -152,7 +156,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.8" />
     <PackageReference Include="Nancy" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
 </Project>

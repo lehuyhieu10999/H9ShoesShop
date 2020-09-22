@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Trang chủ";
     var categories = ViewBag.Categories as List<Category>;
+    var cart = ViewBag.cart as List<CartItem>;
     @functions
         {
         public string currency(float money1)
@@ -88,7 +89,7 @@
             <div class="col">
                 <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
 
-                    <!-- Product 1 -->
+             
                     @foreach (var product in Model.products)
                     {
                         @if (product.Status && !product.IsDelete)

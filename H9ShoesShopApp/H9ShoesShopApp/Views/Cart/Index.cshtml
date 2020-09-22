@@ -33,24 +33,26 @@
                                         <td>@item.Product.ProductId</td>
                                         <td>@item.Product.ProductName</td>
                                         <td><img src="~/images/Product/@item.Product.PathImage" width="100" /></td>
-                                        <td><input id="quantity" type="text" class="txtQuantity" min="1" value="@item.Quantity" style="width:70px;text-align:center" oninput="updatequantity(this,@item.Product.Price,@item.Product.Sale)" /></td>
-                                        <td id="price">@currency(item.Product.Price - item.Product.Price * item.Product.Sale / 100)</td>
-                                        <td id="pricetotal">@currency((item.Product.Price - item.Product.Price * item.Product.Sale/100)*item.Quantity)</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@currency(item.Product.Price - item.Product.Price * item.Product.Sale / 100)</td>
+                                        <td>@currency((item.Product.Price - item.Product.Price * item.Product.Sale / 100) * item.Quantity)</td>
                                         <td><a href="#" data-id="@item.Product.ProductId" class="btn-delete">Xoá</a></td>
                                     </tr>
                                 }
 
                             </tbody>
                         </table>
-
                         <a class="btn btn--blue" asp-controller="Home" asp-action="Index">Tiếp tục mua hàng</a>
-                        <a id="btnUpdate" class="btn" asp-controller="Cart" asp-action="Update">Cập nhật giỏ hàng</a>
-                        <a id="btnDeleteAll" class="btn" asp-controller="Cart" asp-action="Delete">Xoá giỏ hàng</a>
-                        <a id="btnPayment" class="btn" asp-controller="Cart" asp-action="Payment">Thanh toán</a>
+                        <a class="btn btn--radius" asp-controller="Cart" asp-action="DeleteAll">Xoá giỏ hàng</a>
+                        <a class="btn btn--radius-2" asp-controller="Cart" asp-action="Payment">Thanh toán</a>
                     }
                     else
                     {
                         <span class="alert alert-danger">Chưa có sản phẩm nào trong giỏ hàng</span>
+                        <br>
+                        <a class="btn btn--blue" asp-controller="Home" asp-action="Index">Tiếp tục mua hàng</a>
+                        //<a class="btn btn--green" asp-controller="Cart" asp-action="Update">Cập nhật giỏ hàng</a>
+
                     }
 
                 </div>
@@ -61,7 +63,6 @@
 </div>
 @section Scripts {
     <script>
-        
        
         @functions
         {
@@ -73,12 +74,12 @@
             return money2.Replace(",00", "");
         }
     }
-        function updatequantity(input, price, sale) {
-            var quantity = input.value;
-            var x = (price - price * sale / 100) * quantity;
-            x = x.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-            console.log(x);  
-            document.getElementById("pricetotal").innerHTML = x;
-        }
+        //function updatequantity(input, price, sale) {
+        //    var quantity = input.value;
+        //    var x = (price - price * sale / 100) * quantity;
+        //    x = x.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+        //    console.log(x);  
+        //    document.getElementById("pricetotal").innerHTML = x;
+        //}
     </script>
 }
