@@ -14,9 +14,10 @@ tổ chức kinh doanh online đáp ứng nhu cầu mua hàng lớn mà thị tr
 - Bạn đang sử dụng máy Linux hoặc Mac OS hoặc Windows.
 - Bạn có hiểu biết cơ bản về lập trình.
 
-⌨ Các ngôn ngữ sử dụng trong dự án:
-- HTML, CSS, Javascript, Ajax
-- C#
+⌨ Các ngôn ngữ, thư viện, công cụ sử dụng trong dự án:
+- HTML, CSS, Javascript, C#
+- Ajax, JQuery.
+⌨ Công nghệ sử dụng: NET.Core 3.1
 
 ⭐️ Người đóng góp, giúp đỡ trong quá trình thực hiện dự án:
 
