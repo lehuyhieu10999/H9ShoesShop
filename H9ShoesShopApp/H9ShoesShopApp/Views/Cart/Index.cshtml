@@ -36,7 +36,7 @@
                                         <td>@item.Quantity</td>
                                         <td>@currency(item.Product.Price - item.Product.Price * item.Product.Sale / 100)</td>
                                         <td>@currency((item.Product.Price - item.Product.Price * item.Product.Sale / 100) * item.Quantity)</td>
-                                        <td><a href="#" data-id="@item.Product.ProductId" class="btn-delete">Xoá</a></td>
+                                        <td><a asp-controller="Cart" asp-action="Delete" asp-route-id="@item.Product.ProductId" class="btn-delete">Xoá</a></td>
                                     </tr>
                                 }
 
@@ -51,7 +51,7 @@
                         <span class="alert alert-danger">Chưa có sản phẩm nào trong giỏ hàng</span>
                         <br>
                         <a class="btn btn--blue" asp-controller="Home" asp-action="Index">Tiếp tục mua hàng</a>
-                        //<a class="btn btn--green" asp-controller="Cart" asp-action="Update">Cập nhật giỏ hàng</a>
+                        
 
                     }
 
@@ -74,12 +74,5 @@
             return money2.Replace(",00", "");
         }
     }
-        //function updatequantity(input, price, sale) {
-        //    var quantity = input.value;
-        //    var x = (price - price * sale / 100) * quantity;
-        //    x = x.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-        //    console.log(x);  
-        //    document.getElementById("pricetotal").innerHTML = x;
-        //}
     </script>
 }

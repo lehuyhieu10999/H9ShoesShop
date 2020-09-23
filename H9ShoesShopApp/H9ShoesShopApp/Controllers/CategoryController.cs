@@ -122,7 +122,7 @@ namespace H9ShoesShopApp.Controllers
             {
                 return RedirectToAction("RecycleBin", "Category");
             }
-            return RedirectToAction("RecycleBin", "Product");
+            return View();
 
         }
     }

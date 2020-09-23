@@ -1,5 +1,7 @@
-﻿@inject SignInManager<ApplicationUser> signInManager
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextaccessor
+@inject SignInManager<ApplicationUser> signInManager
 @inject UserManager<ApplicationUser> userManager
+
 
 @{
     var user = await userManager.GetUserAsync(User);
@@ -9,12 +11,9 @@
         var userin = Task.Run(async () => await userManager.FindByIdAsync(user.Id)).Result;
         roles = Task.Run(async () => await userManager.GetRolesAsync(userin)).Result;
     }
-    
-
-
-
-}
-
+    var result = HttpContextaccessor.HttpContext.Session.GetObjectFromJson<List<CartItem>>("CartSession");
+    var count = (result == null ? 0 : result.Count);
+   }
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +47,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="top_nav_left"> Chúng tôi luôn mong muốn đem đến cho bạn trải nghiệm tốt nhất !! ♥</div>
+                            <div class="top_nav_left">  Chúng tôi luôn mong muốn đem đến cho bạn trải nghiệm tốt nhất !! ♥</div>
                         </div>
                         <div class="col-md-6 text-right">
                             <div class="top_nav_right">
@@ -114,7 +113,7 @@
                                     <li class="checkout">
                                         <a asp-controller="Cart" asp-action="Index">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items"></span>
+                                            <span id="checkout_items" class="checkout_items">@count</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -235,7 +234,9 @@
     <script src="~/theme/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
     <script src="~/theme/plugins/easing/easing.js"></script>
     <script src="~/theme/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+   
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/theme/js/single_custom.js"></script>
     <script src="~/theme/js/custom.js"></script>
     <script src="~/mystyle/vendor/datatables/jquery.dataTables.min.js"></script>

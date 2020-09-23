@@ -16,13 +16,13 @@ namespace H9ShoesShopApp.Models.Entities
         public string CustomerID { get; set; }
 
         public string CreatedDate { get; set; } 
-      
+        [Required] 
         [StringLength(50)]
         public string ShipName { get; set; }
-
+        [Required]
         [StringLength(50)]
         public string ShipPhoneNumber { get; set; }
-
+        [Required]
         [StringLength(50)]
         public string ShipAddress { get; set; }
 

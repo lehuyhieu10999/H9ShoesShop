@@ -15,19 +15,18 @@ namespace H9ShoesShopApp.Repository
         {
             this.context = context;
         }
-        public Order ChangeStatus(int id, bool status)
+        public int ChangeStatus(int id, bool status)
         {
             var order = GetOrder(id);
             order.Status = status;
-            return Edit(order);
+            return context.SaveChanges();
         }
 
-        public Order CreateOrder(Order order)
+        public int CreateOrder(Order order)
         {
             var result = context.Orders.Add(order);
-            context.SaveChanges();
             order.ID = result.Entity.ID;
-            return order;
+            return context.SaveChanges(); 
         }
 
         public bool DeleteOrder(int id)
@@ -42,10 +41,7 @@ namespace H9ShoesShopApp.Repository
             return false;
         }
 
-        public Order Edit(Order order)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public Order GetOrder(int id)
         {
@@ -55,6 +51,13 @@ namespace H9ShoesShopApp.Repository
         public IEnumerable<Order> Gets()
         {
             return context.Orders.ToList();
+        }
+
+        public int UndoDelete(int id)
+        {
+            var order = GetOrder(id);
+            order.IsDelete = false;
+            return context.SaveChanges();
         }
     }
 }

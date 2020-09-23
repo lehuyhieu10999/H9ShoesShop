@@ -50,16 +50,7 @@ namespace H9ShoesShopApp.Models.Repository
         }
         public int UpdateCategory(CategoryEdit categoryEdit)
         {
-            //var count = 0;
-            //foreach (var item in context.Categories)
-            //{
-            //    if (item.CategoryName == categoryEdit.CategoryName && item.CategoryId != categoryEdit.CategoryId)
-            //    {
-            //        count++;
-            //    }
-            //}
-            //if (count == 0)
-            //{
+           
                 var category = new Category()
                 {
                     CategoryName = categoryEdit.CategoryName,
@@ -93,8 +84,7 @@ namespace H9ShoesShopApp.Models.Repository
                 var editcategory = context.Categories.Attach(category);
                 editcategory.State = EntityState.Modified;
                 return context.SaveChanges();
-            //}
-            //return 0;
+          
         }
         public Category ChangeStatus(int id, bool status)
         {

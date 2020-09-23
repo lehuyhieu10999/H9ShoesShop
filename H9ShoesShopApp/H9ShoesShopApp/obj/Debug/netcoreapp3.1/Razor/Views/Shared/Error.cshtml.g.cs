@@ -77,13 +77,20 @@ using H9ShoesShopApp.ViewModel;
 #nullable disable
 #nullable restore
 #line 10 "C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\Views\_ViewImports.cshtml"
+using H9ShoesShopApp.Helpers;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 11 "C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\Views\_ViewImports.cshtml"
 using H9ShoesShopApp.Models.Identities;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"d6a5625cc8fb4476f348b0fe9041c550465d8bf9", @"/Views/Shared/Error.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"17324ea3e4f138b3c9ff62eb6bcf18b6f5c263b4", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"0e3b2a7212c0d225c7ce4388dc3465fefda73954", @"/Views/_ViewImports.cshtml")]
     public class Views_Shared_Error : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<ErrorViewModel>
     {
         #pragma warning disable 1998

@@ -1,0 +1,104 @@
+﻿@model List<Order>
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewBag.Title = "Đơn hàng đã xóa";
+}
+<div class="container-fluid">
+    <a asp-controller="Order" asp-action="Index" style="margin-bottom:100px"><i class="fas fa-arrow-circle-left"></i>  Trở về quản lý đơn hàng</a>
+    <div class="card-header row py-3">
+        <div>
+            <h3 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h3>
+        </div>
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead style="text-align:center">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">ID Người dùng</th>
+                            <th scope="col">ID Khách</th>
+                            <th scope="col">Ngày đặt</th>
+                            <th scope="col">Tên khách</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col">Công cụ</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align:center">
+                        @foreach (var item in Model)
+                        {
+                            if (item.IsDelete)
+                            {
+                                <tr class="fo">
+                                    <td scope="row" id="idcate">@item.ID</td>
+                                    <td scope="col">@item.ApplicationUserId</td>
+                                    <td scope="col">@item.CustomerID</td>
+                                    <td scope="col">@item.CreatedDate</td>
+                                    <td scope="col">@item.ShipName</td>
+                                    <td><input asp-for="@item.Status" onclick="site.ChangeStatus(@item.ID, this)" /></td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@($"exampleModalLong{@item.ID}")">
+                                            Hoàn tác
+                                        </button>
+                                        <div class="modal fade" id="@($"exampleModalLong{@item.ID}")" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Hoàn tác</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Bạn muốn đưa đơn hàng này trở lại danh sách?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                                        <a class="btn btn-primary" asp-controller="Order" asp-action="UndoDelete" asp-route-id="@item.ID">Hoàn tác</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                            else continue;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .hide {
+        display: none;
+    }
+
+    .mydiv:hover + .hide {
+        display: block;
+    }
+
+    .mydiv:hover {
+        display: none;
+    }
+</style>
+
+
+
+
+
+@section Scripts {
+    <script>
+        var site = {};
+        $(document).ready(function () {
+            $('#dataTable').dataTable();
+        });
+    </script>
+}
+
+

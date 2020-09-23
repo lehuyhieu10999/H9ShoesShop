@@ -1,9 +1,10 @@
 ﻿@model HomeView
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Trang chủ";
     var categories = ViewBag.Categories as List<Category>;
     var cart = ViewBag.cart as List<CartItem>;
+   
+    
     @functions
         {
         public string currency(float money1)
@@ -39,7 +40,7 @@
             <div class="col-md-4">
                 <div class="banner_item align-items-center" style="        background-image: url(/theme/images/banner_1.jpg)">
                     <div class="banner_category">
-                        <a href="categories.html">women's</a>
+                        <a href="#buynow">Trending</a>
                     </div>
                 </div>
             </div>
@@ -68,7 +69,7 @@
         <div class="row">
             <div class="col text-center">
                 <div class="section_title new_arrivals_title">
-                    <h2 id="buynow">New Arrivals For Men</h2>
+                    <h2 id="buynow">New Arrivals</h2>
                 </div>
             </div>
         </div>
@@ -76,10 +77,10 @@
             <div class="col text-center">
                 <div class="new_arrivals_sorting">
                     <ul class="arrivals_grid_sorting clearfix button-group filters-button-group">
-                        <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked" data-filter="*">Bán chạy</li>
-                        @foreach (var item in categories)
+                        <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked" data-filter="*">all</li>
+                        @foreach (var category in categories)
                         {
-                            <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center" data-filter=".@item.CategoryId">@item.CategoryName</li>
+                            <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center" data-filter=".@category.CategoryId">@category.CategoryName</li>
                         }
                     </ul>
                 </div>
@@ -88,51 +89,44 @@
         <div class="row">
             <div class="col">
                 <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
-
-             
                     @foreach (var product in Model.products)
                     {
-                        @if (product.Status && !product.IsDelete)
+                        @if (product.Status && !product.IsDelete && product.Sale > 0)
                         {<div class="product-item @product.Category.CategoryId">
                                 <div class="product discount product_filter">
                                     <div class="product_image">
-                                        <a asp-controller="Home" asp-action="Detail" asp-route-id="@product.ProductId"><img style="width:213px;height:213px" src="~/images/Product/@product.PathImage"></a>
+                                        <a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId"><img style="width:213px;height:213px" src="~/images/Product/@product.PathImage"></a>
                                     </div>
                                     <div class="favorite favorite_left"></div>
                                     <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-@product.Sale%</span></div>
                                     <div class="product_info">
-                                        <h6 class="product_name"><a href="single.html">@product.ProductName</a></h6>
+                                        <h6 class="product_name"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">@product.ProductName</a></h6>
                                         <div class="product_price">@currency(@product.Price - @product.Price * @product.Sale / 100)<span>@currency(@product.Price)</span></div>
                                     </div>
                                     <div style="margin-left:29px;margin-top:15px" class="red_button add_to_cart_button"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">mua ngay</a></div>
                                 </div>
                             </div>
                         }
-                        continue;
+                        else if (product.Status && !product.IsDelete && product.Sale == 0)
+                        {
+
+                            <div class="product-item @product.Category.CategoryId">
+                                <div class="product discount product_filter">
+                                    <div class="product_image">
+                                        <a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId"><img style="width:213px;height:213px" src="~/images/Product/@product.PathImage"></a>
+                                    </div>
+                                    <div class="favorite favorite_left"></div>
+                                    <div class="product_info">
+                                        <h6 class="product_name"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">@product.ProductName</a></h6>
+                                        <div class="product_price">@currency(@product.Price - @product.Price * @product.Sale / 100)</div>
+                                    </div>
+                                    <div style="margin-left:29px;margin-top:15px" class="red_button add_to_cart_button"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">mua ngay</a></div>
+                                </div>
+                            </div>
+                        }
                     }
                 </div>
             </div>
-        </div>
-        <div>
-            <nav aria-label="...">
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <span class="page-link">Previous</span>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item active" aria-current="page">
-                        <span class="page-link">
-                            2
-                            <span class="sr-only">(current)</span>
-                        </span>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
-
         </div>
     </div>
 </div>
@@ -155,22 +149,22 @@
                         <ul class="timer">
                             <li class="d-inline-flex flex-column justify-content-center align-items-center">
                                 <div id="day" class="timer_num">03</div>
-                                <div class="timer_unit">Day</div>
+                                <div class="timer_unit">Ngày</div>
                             </li>
                             <li class="d-inline-flex flex-column justify-content-center align-items-center">
                                 <div id="hour" class="timer_num">15</div>
-                                <div class="timer_unit">Hours</div>
+                                <div class="timer_unit">Giờ</div>
                             </li>
                             <li class="d-inline-flex flex-column justify-content-center align-items-center">
                                 <div id="minute" class="timer_num">45</div>
-                                <div class="timer_unit">Mins</div>
+                                <div class="timer_unit">Phút</div>
                             </li>
                             <li class="d-inline-flex flex-column justify-content-center align-items-center">
                                 <div id="second" class="timer_num">23</div>
-                                <div class="timer_unit">Sec</div>
+                                <div class="timer_unit">Giây</div>
                             </li>
                         </ul>
-                        <div class="red_button deal_ofthe_week_button"><a href="#">shop now</a></div>
+                        <div class="red_button deal_ofthe_week_button"><a href="#buynow">Đặt hàng ngay</a></div>
                     </div>
                 </div>
             </div>
@@ -214,12 +208,8 @@
                                         </div>
                                     </div>
                                 }
-                                continue;
                             }
                         </div>
-
-
-
                         <!-- Slider Navigation -->
 
                         <div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
@@ -243,8 +233,8 @@
                     <div class="benefit_item d-flex flex-row align-items-center">
                         <div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
                         <div class="benefit_content">
-                            <h6>free shipping</h6>
-                            <p>Suffered Alteration in Some Form</p>
+                            <h6>Miễn phí vận chuyển</h6>
+                            <p>Hãy để chúng tôi đem đến cho bạn sự an tâm!</p>
                         </div>
                     </div>
                 </div>
@@ -252,8 +242,8 @@
                     <div class="benefit_item d-flex flex-row align-items-center">
                         <div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
                         <div class="benefit_content">
-                            <h6>cach on delivery</h6>
-                            <p>The Internet Tend To Repeat</p>
+                            <h6>Thanh toán khi giao hàng</h6>
+                            <p>Nhớ kiểm tra hàng trước khi thanh toán bạn nhé!</p>
                         </div>
                     </div>
                 </div>
@@ -261,8 +251,8 @@
                     <div class="benefit_item d-flex flex-row align-items-center">
                         <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
                         <div class="benefit_content">
-                            <h6>45 days return</h6>
-                            <p>Making it Look Like Readable</p>
+                            <h6>15 ngày đổi trả miễn phí</h6>
+                            <p>Đừng ngần ngại đổi trả cho chúng tôi!</p>
                         </div>
                     </div>
                 </div>
@@ -270,7 +260,7 @@
                     <div class="benefit_item d-flex flex-row align-items-center">
                         <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
                         <div class="benefit_content">
-                            <h6>opening all week</h6>
+                            <h6>Luôn mở cửa chào đón bạn!</h6>
                             <p>8AM - 09PM</p>
                         </div>
                     </div>

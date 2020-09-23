@@ -1,0 +1,111 @@
+﻿@model List<Order>
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewBag.Title = "Quản lý đơn đặt hàng";
+    var categories = ViewBag.Categories as List<Category>;
+
+}
+<div class="container-fluid">
+    <div class="card-header row py-3">
+        <div>
+            <h3 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h3>
+        </div>
+        <div class="ml-auto" style="padding-right:30px">
+            <a asp-controller="Order" asp-action="RecycleBin" class="btn btn-danger" style="width:150px"><i class="fas fa-trash"></i> Thùng rác</a>
+        </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead style="text-align:center">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">ID Người dùng</th>
+                        <th scope="col">ID Khách</th>
+                        <th scope="col">Ngày đặt</th>
+                        <th scope="col">Tên khách</th>
+                        <th scope="col">Số điện thoại</th>
+                        <th scope="col">Địa chỉ</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col">Công cụ</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align:center">
+                    @foreach (var item in Model)
+                    {
+                        if (!item.IsDelete)
+                        {
+                            <tr class="fo">
+                                <td scope="row" id="idcate">@item.ID</td>
+                                <td scope="col">@item.ApplicationUserId</td>   
+                                <td scope="col">@item.CustomerID</td>   
+                                <td scope="col">@item.CreatedDate</td>   
+                                <td scope="col">@item.ShipName</td>   
+                                <td scope="col">@item.ShipPhoneNumber</td>   
+                                <td scope="col">@item.ShipAddress</td>    
+                                <td><input asp-for="@item.Status" onclick="site.ChangeStatus(@item.ID, this)"  /></td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@($"exampleModalLong{@item.ID}")">
+                                        Xóa
+                                    </button>
+                                    <div class="modal fade" id="@($"exampleModalLong{@item.ID}")" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Xóa đơn hàng có id = @item.ID?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Bạn chắc chứ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                                    <a type="button" class="btn btn-danger" asp-controller="Order" asp-action="Delete" asp-route-id="@item.ID">Xóa</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else continue;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+
+@section Scripts {
+    <script>
+        var site = {};
+        $(document).ready(function () {
+            $('#dataTable').dataTable();
+        });
+        site.ChangeStatus = function (id, input) {
+            var result = confirm('Bạn muốn thay đổi trạng thái của đơn hàng có ID = ' + id)
+            if (result) {
+                console.log(result)
+                $.ajax({
+                    url: `/Order/${id}/${input.checked}`,
+                    method: "GET",
+                    dataType: "json",
+                    success: function () {
+                        alert('Thành công!');
+                    },
+
+                });
+            } else {
+                input.checked = !input.checked;
+                alert("Đã hủy")
+            };
+        };
+    </script>
+}
+

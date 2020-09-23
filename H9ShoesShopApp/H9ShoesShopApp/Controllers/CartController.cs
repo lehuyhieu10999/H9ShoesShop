@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Identity;
+using H9ShoesShopApp.Models;
+using System.Threading.Tasks;
 
 namespace H9ShoesShopApp.Controllers
 {
@@ -23,16 +26,21 @@ namespace H9ShoesShopApp.Controllers
         private readonly IProductRepository productRepository;
         private readonly IOrderRepository orderRepository;
         private readonly IOrderDetailRepository orderDetailRepository;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
 
         public CartController(IProductRepository productRepository,
                                 IOrderRepository orderRepository,
-                                IOrderDetailRepository orderDetailRepository)
+                                IOrderDetailRepository orderDetailRepository,
+                                UserManager<ApplicationUser> userManager,
+                                SignInManager<ApplicationUser> signInManager)
         {
             this.productRepository = productRepository;
             this.orderDetailRepository = orderDetailRepository;
             this.orderRepository =  orderRepository;
-
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
        [AllowAnonymous]
@@ -53,36 +61,23 @@ namespace H9ShoesShopApp.Controllers
             return RedirectToAction("Index", "Cart");
         }
         [AllowAnonymous]
-        public JsonResult Delete(int id)
+       
+        public ActionResult Delete(int id)
         {
-            var sessionCart = HttpContext.Session.GetObjectFromJson<List<CartItem>>(CartSession);
-            sessionCart.RemoveAll(x => x.Product.ProductId == id);
-            HttpContext.Session.SetObjectAsJson(CartSession, sessionCart); 
-            return Json(new
-            {
-                status = true
-            });
+            int index = isExisting(id);
+            var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>(CartSession);
+            cart.RemoveAt(index);
+            HttpContext.Session.SetObjectAsJson(CartSession, cart);
+            return RedirectToAction("Index");
         }
-        //[AllowAnonymous]
-        //public JsonResult Update(string cartModel)
-        //{
-        //    var jsonCart = new JavaScriptSerializer().Deserialize<List<CartItem>>(cartModel);
-        //    var sessionCart = HttpContext.Session.GetObjectFromJson<List<CartItem>>(CartSession);
-
-        //    foreach (var item in sessionCart)
-        //    {
-        //        var jsonItem = jsonCart.SingleOrDefault(x => x.Product.ProductId == item.Product.ProductId);
-        //        if (jsonItem != null)
-        //        {
-        //            item.Quantity = jsonItem.Quantity;
-        //        }
-        //    }
-        //    HttpContext.Session.SetObjectAsJson(CartSession, sessionCart);
-        //    return Json(new
-        //    {
-        //        status = true
-        //    });
-        //}
+        private int isExisting(int id)
+        {
+            var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>(CartSession);
+            for (int i = 0; i < cart.Count; i++)
+                if (cart[i].Product.ProductId == id)
+                    return i;
+            return -1;
+        }
         [AllowAnonymous]
         [Route("Cart/AddItem/{productId}/{quantity}")]
         public JsonResult AddItem(int productId, int quantity)
@@ -144,7 +139,7 @@ namespace H9ShoesShopApp.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult Payment(string shipName, string mobile, string address, string email)
+        public async Task<JsonResult> Payment(string shipName, string mobile, string address, string email)
         {
             var order = new Order();
             order.CreatedDate = DateTime.Now.ToString("dd/MM/yyyy");
@@ -152,6 +147,15 @@ namespace H9ShoesShopApp.Controllers
             order.ShipPhoneNumber = mobile;
             order.ShipName = shipName;
             order.ShipEmail = email;
+            order.CustomerID = (shipName+ order.CreatedDate.ToString()).Substring(0,6);
+            order.Status = false;
+            order.IsDelete = false;
+            if (signInManager.IsSignedIn(User))
+            {
+                var user = await userManager.FindByNameAsync(email);
+                order.ApplicationUser = user;
+                order.ApplicationUserId = user.Id;
+            }
 
             try
             {
@@ -162,13 +166,14 @@ namespace H9ShoesShopApp.Controllers
                 {
                     var _orderDetail = new OrderDetail();
                     orderDetail.ProductID = item.Product.ProductId;
-                    orderDetail.OrderID = id.ID;
+                    orderDetail.OrderID = order.ID;
                     orderDetail.Price = item.Product.Price;
                     orderDetail.Quantity = item.Quantity;
                     orderDetailRepository.Insert(orderDetail);
 
                     Total += (item.Product.Price * item.Quantity);
                 }
+                DeleteAll();
             }
             catch (Exception)
             {

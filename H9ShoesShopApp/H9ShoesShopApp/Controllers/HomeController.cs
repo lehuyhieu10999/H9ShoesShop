@@ -39,7 +39,7 @@ namespace H9ShoesShopApp.Controllers
                                          select product).TakeLast(10).ToList();
             var model = new HomeView()
             {
-                products = products,
+               products = products,
                productssale = productsale
             };
             ViewBag.Categories = GetCategories();

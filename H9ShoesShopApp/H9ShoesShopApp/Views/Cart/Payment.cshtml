@@ -11,6 +11,7 @@
         var userin = Task.Run(async () => await userManager.FindByIdAsync(user.Id)).Result;
         roles = Task.Run(async () => await userManager.GetRolesAsync(userin)).Result;
     }
+
 }
 
 <div class="container single_product_container">
@@ -67,44 +68,42 @@
 
                         <div class="form-group">
                             <label>Người nhận</label>
-                            <input name="shipName" class="form-control" id="nguoinhan" value="@user.FullName" />
+                            <input name="shipName" class="form-control" id="nguoinhan" value="@user.FullName" placeholder="Vui lòng nhập tên" required />
                         </div>
                         <div class="form-group">
                             <label>Điện thoại</label>
-                            <input name="mobile" class="form-control" id="dienthoai" value="@user.PhoneNumber" />
+                            <input name="mobile" class="form-control" id="dienthoai" value="@user.PhoneNumber" placeholder="Vui lòng nhập số điện thoại" required />
                         </div>
                         <div class="form-group">
                             <label>Địa chỉ</label>
-                            <input name="address" class="form-control" id="diachi" value="@user.Address" />
+                            <input name="address" class="form-control" id="diachi" value="@user.Address" placeholder="Vui lòng nhập địa chỉ" required />
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input name="email" class="form-control" id="emai" value="@user.Email" />
+                            <input name="email" class="form-control" id="emai" value="@user.Email" placeholder="Vui lòng nhập email" />
                         </div>
                         <button type="button" class="btn" id="btnSave">Gửi đơn hàng</button>
-
                     }
                     else
                     {
 
                         <div class="form-group">
                             <label>Người nhận</label>
-                            <input name="shipName" class="form-control" id="nguoinhan" />
+                            <input name="shipName" class="form-control" id="nguoinhan" placeholder="Vui lòng nhập tên" required />
                         </div>
                         <div class="form-group">
                             <label>Điện thoại</label>
-                            <input name="mobile" class="form-control" id="dienthoai" />
+                            <input name="mobile" class="form-control" id="dienthoai" placeholder="Vui lòng nhập số điện thoại" required />
                         </div>
                         <div class="form-group">
                             <label>Địa chỉ</label>
-                            <input name="address" class="form-control" id="diachi" />
+                            <input name="address" class="form-control" id="diachi" placeholder="Vui lòng nhập địa chỉ" required />
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input name="email" class="form-control" id="emai" />
+                            <input name="email" class="form-control" id="emai" placeholder="Vui lòng nhập email" />
                         </div>
                         <button type="button" class="btn" id="btnSave">Gửi đơn hàng</button>
-
                     }
                 </form>
             </div>
@@ -116,9 +115,28 @@
     .form-control {
         width: 500px;
     }
+
+    label.error {
+        display: inline-block;
+        color: red;
+        width: 200px;
+        font-size: 15px;
+        margin-top: 15px
+    }
+
+    .error {
+        font-size: 15px;
+    }
+    #btnSave{
+        background-color:brown;
+        color:white;
+    }
 </style>
 @section Scripts {
+
+
     <script>
+
         @functions
         {
         public string currency(float money1)
@@ -131,27 +149,57 @@
     }
 
         $(document).ready(function () {
+            $("#thanhtoan").validate({
+                rules: {
+                    shipname: {
+                        required: true,
+                        minlength: 6
+                    },
+                    address: {
+                        required: true,
+                        minlength: 10
+                    },
+                    mobile: {
+                        required: true,
+                        minlength: 8,
+                        maxlength:11
+                    },
+                },
+                messages: {
+                    shipname: {
+                        required: "Bạn chưa nhập tên",
+                        minlength: "Địa chỉ ngắn vậy sao tìm được?"
+                    },
+                    address: {
+                        required: "Bạn chưa nhập địa chỉ",
+                        minlength: "Địa chỉ ngắn vậy sao tìm được?"
+                    },
+                    mobile: {
+                        required: "Vui lòng nhập số điện thoại",
+                        minlength: "Số máy quý khách vừa nhập là số không có thực"
+                    },
+                },
+            }
+
+            );
             $("#btnSave").click(function (e) {
-                var valdata = $("#thanhtoan").serialize();
-                //to get alert popup
-                $.ajax(
-                    {
-                        type: "POST", //HTTP POST Method
-                        url: "/Cart/Payment", // Controller/View
-                        dataType: "json",
-                        data: valdata,
+                if ($('#thanhtoan').valid()) {
+                    var valdata = $("#thanhtoan").serialize();
+                    $.ajax(
+                        {
+                            type: "POST", 
+                            url: "/Cart/Payment", 
+                            dataType: "json",
+                            data: valdata,
 
-                        success: function () {
-                            alert("Đặt hàng thành công!! Cảm ơn đã ủng hộ chúng tôi <3")
-                            window.location.replace("https://localhost:44395/Home/Index");
+                            success: function () {
+                                alert("Đặt hàng thành công!! Cảm ơn đã ủng hộ chúng tôi <3")
+                                window.location.replace("https://localhost:44395/Home/Index");
 
-                        }
-                    });
-
+                            }
+                        });
+                }
             });
         });
-
-
-
     </script>
 }
