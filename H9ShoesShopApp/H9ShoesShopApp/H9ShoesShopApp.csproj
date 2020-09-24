@@ -18,6 +18,8 @@
     <Compile Remove="Migrations\20200922155758_update.Designer.cs" />
     <Compile Remove="Migrations\20200922155935_AlterOrderTables.cs" />
     <Compile Remove="Migrations\20200922155935_AlterOrderTables.Designer.cs" />
+    <Compile Remove="Migrations\20200924070010_updateorder.cs" />
+    <Compile Remove="Migrations\20200924070010_updateorder.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,95 @@
+﻿@model List<OrderDetail>
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    var order = ViewBag.order as Order;
+    float Total = 0;
+}
+
+
+<div class="container-fluid">
+    <div class="card-header row py-3">
+        <div>
+            <h3 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h3>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <div>Tên khách hàng: @Model[0].Order.ShipName</div>
+            <div>Ngày đặt hàng: @Model[0].Order.CreatedDate</div>
+            <div>Đối tượng: @(Model[0].Order.ApplicationUserId != null?"Khách hàng thường xuyên":"Khách hàng không thường xuyên")</div>
+            <div>Số điện thoại: @Model[0].Order.ShipPhoneNumber</div>
+            <div>Địa chỉ giao hàng: @Model[0].Order.ShipAddress</div>
+            <div>Trạng thái: @(Model[0].Order.Status ?"Đã thanh toán":"Đang chờ thanh toán")</div>
+            <div>Thời gian giao hàng dự kiến: </div>
+            <div>
+                Phương thức thanh toán: -Thanh toán bằng tiền mặt hoặc chuyển khoản
+                hoặc thanh toán 50% giá trị đơn hàng, 50% còn lại thanh toán sau khi giao hàng!
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="thead-dark" style="text-align:center">
+                        <tr>
+                            <td>Mã SP</td>
+                            <td>Tên SP</td>
+                            <td>Ảnh SP</td>
+                            <td>Số lượng</td>
+                            <td>Đơn giá</td>
+                            <td>Thành tiền</td>
+
+                        </tr>
+                    </thead>
+                    <tbody style="text-align:center">
+                        @foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td>@item.Product.ProductId</td>
+                                <td>@item.Product.ProductName</td>
+                                <td><img src="~/images/Product/@item.Product.PathImage" width="100" /></td>
+                                <td>@item.Quantity</td>
+                                <td>@currency(item.Product.Price - item.Product.Price * item.Product.Sale / 100)</td>
+                                <td>@currency((item.Product.Price - item.Product.Price * item.Product.Sale / 100) * item.Quantity)</td>
+                                @{ Total += (item.Product.Price - item.Product.Price * item.Product.Sale / 100) * item.Quantity; }
+                            </tr>
+
+                        }
+                        <tr style="color:red">
+                            <td colspan="4"></td>
+                            <td>Total:</td>
+                            <td>@currency(Total)</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<style>
+    div {
+        padding-bottom: 10px;
+    }
+</style>
+
+@section Scripts {
+    <script>
+
+        @functions
+        {
+        public string currency(float money1)
+        {
+            var vietnam = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+            string money2 = String.Format(vietnam, "{0:c}", money1);
+            int start = money2.Length - 1;
+            return money2.Replace(",00", "");
+        }
+    }
+    </script>
+}

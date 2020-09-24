@@ -7,6 +7,7 @@ namespace H9ShoesShopApp.Models.Entities
     {
         [Column(Order = 0), Key, ForeignKey("Product")]
         public int ProductID { get; set; }
+        public Product Product { get; set; }
 
         [Column(Order = 1), Key, ForeignKey("Order")]
 

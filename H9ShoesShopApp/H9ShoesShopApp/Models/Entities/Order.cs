@@ -34,6 +34,6 @@ namespace H9ShoesShopApp.Models.Entities
 
         public ICollection<OrderDetail> OrderDetails { get; set; }
 
-      
+
     }
 }

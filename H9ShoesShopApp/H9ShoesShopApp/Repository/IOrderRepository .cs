@@ -1,4 +1,6 @@
 ﻿using H9ShoesShopApp.Models.Entities;
+using H9ShoesShopApp.ViewModel.Order;
+using H9ShoesShopApp.ViewModel.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +16,6 @@ namespace H9ShoesShopApp.Models.Repository
         Order GetOrder(int id);
         int ChangeStatus(int id, bool status);
         int UndoDelete(int id);
+
     }
 }

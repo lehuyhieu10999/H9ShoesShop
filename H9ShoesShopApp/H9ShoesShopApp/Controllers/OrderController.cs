@@ -2,19 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using H9ShoesShopApp.Models;
 using H9ShoesShopApp.Models.Entities;
 using H9ShoesShopApp.Models.Repository;
+using H9ShoesShopApp.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace H9ShoesShopApp.Controllers
 {
     public class OrderController : Controller
     {
+        private readonly AppDbContext context;
         private readonly IOrderRepository orderRepository;
+        private readonly IProductRepository productRepository;
 
-        public OrderController(IOrderRepository orderRepository)
+        public OrderController(IOrderRepository orderRepository,
+            IProductRepository productRepository,
+        AppDbContext context)
         {
+            this.productRepository = productRepository;
             this.orderRepository = orderRepository;
+            this.context = context;
         }
         public IActionResult Index()
         {
@@ -51,6 +59,23 @@ namespace H9ShoesShopApp.Controllers
             }
             return View();
 
+        }
+        [Route("/Order/Detail/{id}")]
+        public IActionResult Detail(int id)
+        {
+            var order = orderRepository.GetOrder(id);
+            var orderdetails = new List<OrderDetail>();
+            foreach (var item in context.OrderDetails.ToList())
+            {
+                if (item.OrderID == id)
+                {
+                    Product product = productRepository.Get(item.ProductID);
+                    item.Product = product;
+                    item.Order = order;
+                    orderdetails.Add(item);
+                }
+            }
+            return View(orderdetails);
         }
     }
 }

@@ -15,6 +15,22 @@ namespace H9ShoesShopApp.Repository
         {
             this.context = context;
         }
+
+        public OrderDetail Get(int orderdetailId)
+        {
+            return context.OrderDetails.Find(orderdetailId);
+        }
+
+        public OrderDetail GetbyOrder(int orderid)
+        {
+            foreach (var item in context.OrderDetails)
+            {
+                if (item.OrderID == orderid)
+                    return item;
+            }
+            return null;
+        }
+
         public bool Insert(OrderDetail detail)
         {
             try
@@ -29,5 +45,6 @@ namespace H9ShoesShopApp.Repository
 
             }
         }
+
     }
 }

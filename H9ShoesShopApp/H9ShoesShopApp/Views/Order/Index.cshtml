@@ -1,6 +1,5 @@
 ﻿@model List<Order>
 @{
-    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
     ViewBag.Title = "Quản lý đơn đặt hàng";
     var categories = ViewBag.Categories as List<Category>;
 
@@ -19,12 +18,7 @@
                 <thead style="text-align:center">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">ID Người dùng</th>
-                        <th scope="col">ID Khách</th>
-                        <th scope="col">Ngày đặt</th>
                         <th scope="col">Tên khách</th>
-                        <th scope="col">Số điện thoại</th>
-                        <th scope="col">Địa chỉ</th>
                         <th scope="col">Trạng thái</th>
                         <th scope="col">Công cụ</th>
                     </tr>
@@ -35,18 +29,16 @@
                         if (!item.IsDelete)
                         {
                             <tr class="fo">
-                                <td scope="row" id="idcate">@item.ID</td>
-                                <td scope="col">@item.ApplicationUserId</td>   
-                                <td scope="col">@item.CustomerID</td>   
-                                <td scope="col">@item.CreatedDate</td>   
-                                <td scope="col">@item.ShipName</td>   
-                                <td scope="col">@item.ShipPhoneNumber</td>   
-                                <td scope="col">@item.ShipAddress</td>    
+                                <td scope="row" id="idcate">@item.ID</td>    
+                                <td scope="col">@item.ShipName</td>       
                                 <td><input asp-for="@item.Status" onclick="site.ChangeStatus(@item.ID, this)"  /></td>
                                 <td>
                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@($"exampleModalLong{@item.ID}")">
                                         Xóa
                                     </button>
+                                    <a type="button" class="btn btn-dark" asp-controller="Order" asp-action="Detail" asp-route-id="@item.ID">
+                                        Xem chi tiết
+                                    </a>
                                     <div class="modal fade" id="@($"exampleModalLong{@item.ID}")" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">

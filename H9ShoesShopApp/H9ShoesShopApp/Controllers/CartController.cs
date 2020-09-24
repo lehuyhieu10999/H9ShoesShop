@@ -22,7 +22,6 @@ namespace H9ShoesShopApp.Controllers
     {
         public List<CartItem> Carts { get; set; }
         private const string CartSession = "CartSession";
-        public float Total { get; set; }
         private readonly IProductRepository productRepository;
         private readonly IOrderRepository orderRepository;
         private readonly IOrderDetailRepository orderDetailRepository;
@@ -170,8 +169,6 @@ namespace H9ShoesShopApp.Controllers
                     orderDetail.Price = item.Product.Price;
                     orderDetail.Quantity = item.Quantity;
                     orderDetailRepository.Insert(orderDetail);
-
-                    Total += (item.Product.Price * item.Quantity);
                 }
                 DeleteAll();
             }

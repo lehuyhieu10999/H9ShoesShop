@@ -3,7 +3,7 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     var categoryname = ViewBag.CategoryName;
-    
+    float Total = 0;
 }
 
 
@@ -36,22 +36,52 @@
                                         <td>@item.Quantity</td>
                                         <td>@currency(item.Product.Price - item.Product.Price * item.Product.Sale / 100)</td>
                                         <td>@currency((item.Product.Price - item.Product.Price * item.Product.Sale / 100) * item.Quantity)</td>
-                                        <td><a asp-controller="Cart" asp-action="Delete" asp-route-id="@item.Product.ProductId" class="btn-delete">Xoá</a></td>
+                                        @{ Total += (item.Product.Price - item.Product.Price * item.Product.Sale / 100) * item.Quantity; }
+                                        <td>
+                                            <a class="btn btn-danger" data-toggle="modal" data-target="#@($"exampleModalLong{@item.Product.ProductId}")">Xoá</a>
+                                            <div class="modal fade" id="@($"exampleModalLong{@item.Product.ProductId}")" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Xóa @item.Product.ProductName?</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Bạn chắc chứ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                                            <a asp-controller="Cart" asp-action="Delete" asp-route-id="@item.Product.ProductId" class="btn-delete">Xóa</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
                                     </tr>
-                                }
 
+                                }
+                                <tr style="color:red">
+                                    <td colspan="4"></td>
+                                    <td>Tổng tiền:</td>
+                                    <td>@currency(Total)</td>
+
+                                </tr>
                             </tbody>
                         </table>
-                        <a class="btn btn--blue" asp-controller="Home" asp-action="Index">Tiếp tục mua hàng</a>
-                        <a class="btn btn--radius" asp-controller="Cart" asp-action="DeleteAll">Xoá giỏ hàng</a>
-                        <a class="btn btn--radius-2" asp-controller="Cart" asp-action="Payment">Thanh toán</a>
+                        <div style="text-align:center;margin-top:20px">
+                            <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Tiếp tục mua hàng</a>
+                            <a class="btn btn-danger" asp-action="DeleteAll">Xoá giỏ hàng</a>
+                            <a class="btn btn-success" asp-action="Payment">Thanh toán</a>
+                        </div>
                     }
                     else
                     {
                         <span class="alert alert-danger">Chưa có sản phẩm nào trong giỏ hàng</span>
                         <br>
                         <a class="btn btn--blue" asp-controller="Home" asp-action="Index">Tiếp tục mua hàng</a>
-                        
+
 
                     }
 
@@ -63,7 +93,7 @@
 </div>
 @section Scripts {
     <script>
-       
+
         @functions
         {
         public string currency(float money1)

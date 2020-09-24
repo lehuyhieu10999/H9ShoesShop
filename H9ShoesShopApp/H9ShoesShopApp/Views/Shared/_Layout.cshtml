@@ -13,7 +13,28 @@
     }
     var result = HttpContextaccessor.HttpContext.Session.GetObjectFromJson<List<CartItem>>("CartSession");
     var count = (result == null ? 0 : result.Count);
-   }
+    string total = "";
+    if (result != null)
+    {
+        float Total = 0;
+        foreach (var item in result)
+        {
+            Total += (item.Product.Price - item.Product.Price * item.Product.Sale / 100) * item.Quantity;
+        }
+        total = currency(Total);
+    }
+    @functions
+        {
+        public string currency(float money1)
+        {
+            var vietnam = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+            string money2 = String.Format(vietnam, "{0:c}", money1);
+            int start = money2.Length - 1;
+            return money2.Replace(",00", "");
+        }
+    }
+
+}
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -38,6 +59,8 @@
     <link rel="stylesheet" type="text/css" href="~/theme/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="~/theme/styles/single_styles.css">
     <link rel="stylesheet" type="text/css" href="~/theme/styles/single_responsive.css">
+
+    <link href="~/css/site2.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -107,19 +130,46 @@
                                 <a asp-controller="Home" asp-action="Index">H9<span>Shoes Shop</span></a>
                             </div>
                             <nav class="navbar ml-6">
-                                <ul class="navbar_user">
-                                    <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-                                    <li class="checkout">
-                                        <a asp-controller="Cart" asp-action="Index">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">@count</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="hamburger_container">
-                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-info" data-toggle="dropdown">
+                                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart <span class="badge badge-pill badge-danger">@count</span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="row total-header-section">
+                                            <div class="col-lg-6 col-sm-6 col-6">
+                                                <i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="badge badge-pill badge-danger">@count</span>
+                                            </div>
+                                            <div class="col-lg-6 col-sm-6 col-6 total-section text-right">
+                                                <p>Total: <span class="text-info">@(total != ""?total:"0đ")</span></p>
+                                            </div>
+                                        </div>
+                                        @if (result != null && result.Count >0)
+                                        {
+                                            @foreach (var item in result)
+                                            {
+                                                <div class="row cart-detail">
+                                                    <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                                                        <img src="~/images/Product/@item.Product.PathImage">
+                                                    </div>
+                                                    <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+                                                        <p>@item.Product.ProductName <a class="btn btn-danger" style="font-size:12px" asp-controller="Cart" asp-action="Delete" asp-route-id="@item.Product.ProductId" >Xóa</a></p>
+                                                        <span class="price text-info"> @currency((item.Product.Price - item.Product.Price * item.Product.Sale / 100)*@item.Quantity)</span> <span class="count"> Số lượng: @item.Quantity</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div class="row">
+                                                <div class="col-lg-12 col-sm-12 col-12 text-center checkout">
+                                                    <a class="btn btn-danger" asp-controller="Cart" asp-action="Index">Kiểm tra giỏ hàng</a>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="text-danger" style="text-align:center;font-size:15px"> Giỏ hàng của bạn chưa có gì <i class="fas fa-sad-tear"></i><br> <a class="btn btn-danger" asp-controller="Home" asp-action="Index">Cùng nhau mua sắm nào!!!</a></div>
+                                        }
+                                    </div>
                                 </div>
+
                             </nav>
                         </div>
                     </div>
@@ -234,7 +284,7 @@
     <script src="~/theme/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
     <script src="~/theme/plugins/easing/easing.js"></script>
     <script src="~/theme/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-   
+
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/theme/js/single_custom.js"></script>
