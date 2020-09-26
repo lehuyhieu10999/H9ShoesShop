@@ -68,7 +68,7 @@ namespace H9ShoesShopApp.Controllers
             {
                 ViewBag.Categories = categoryRepository.Gets();
                 if (productRepository.CreateProduct(model) > 0)
-                    return RedirectToAction("Index", "Product");
+                    return RedirectToAction("ProductbyCategory", "Product", new { categoryid = model.CategoryId });
                 else
                     ModelState.AddModelError("", "Tên này đã tồn tại, vui lòng thử lại tên khác!");
             }
@@ -82,16 +82,17 @@ namespace H9ShoesShopApp.Controllers
             {
                 if (productRepository.Update(model) > 0)
                 {
-                    return RedirectToAction("Index", "Product");
+                    return RedirectToAction("ProductbyCategory", "Product", new { categoryid = model.CategoryId });
                 }
             }
             return View();
         }
         public IActionResult Delete(int id)
         {
+            var product = productRepository.Get(id);
             if (productRepository.Delete(id))
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("ProductbyCategory", "Product", new { categoryid = product.CategoryId });
             }
             return View();
         }
@@ -130,6 +131,17 @@ namespace H9ShoesShopApp.Controllers
                 ViewBag.id = id;
                 return View("~/Views/Error/ProductNotFound.cshtml");
             }
+        }
+        [Route("/Product/ProductbyCategory/{Categoryid}")]
+        public IActionResult ProductbyCategory(int Categoryid)
+        {
+            var result = productRepository.ProductByCategory(Categoryid);
+            if (result != null)
+            {
+                ViewBag.Category = categoryRepository.Get(Categoryid);
+                return View(result);
+            }
+            return View();
         }
     }
 }

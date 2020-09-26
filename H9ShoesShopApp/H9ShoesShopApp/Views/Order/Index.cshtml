@@ -12,6 +12,7 @@
         <div class="ml-auto" style="padding-right:30px">
             <a asp-controller="Order" asp-action="RecycleBin" class="btn btn-danger" style="width:150px"><i class="fas fa-trash"></i> Thùng rác</a>
         </div>
+    </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -19,6 +20,8 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Tên khách</th>
+                        <th scope="col">Địa chỉ</th>
+                        <th scope="col">Đối tượng</th>
                         <th scope="col">Trạng thái</th>
                         <th scope="col">Công cụ</th>
                     </tr>
@@ -29,16 +32,18 @@
                         if (!item.IsDelete)
                         {
                             <tr class="fo">
-                                <td scope="row" id="idcate">@item.ID</td>    
-                                <td scope="col">@item.ShipName</td>       
-                                <td><input asp-for="@item.Status" onclick="site.ChangeStatus(@item.ID, this)"  /></td>
+                                <td scope="row" id="idcate">@item.ID</td>
+                                <td scope="col">@item.ShipName</td>
+                                <td scope="col">@item.ShipAddress</td>
+                                <td scope="col">@(item.ApplicationUserId != null?"Thường xuyên":"Không thường xuyên")</td>
+                                <td><input asp-for="@item.Status" onclick="site.ChangeStatus(@item.ID, this)" /></td>
                                 <td>
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@($"exampleModalLong{@item.ID}")">
-                                        Xóa
-                                    </button>
                                     <a type="button" class="btn btn-dark" asp-controller="Order" asp-action="Detail" asp-route-id="@item.ID">
                                         Xem chi tiết
                                     </a>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@($"exampleModalLong{@item.ID}")">
+                                        Xóa
+                                    </button>
                                     <div class="modal fade" id="@($"exampleModalLong{@item.ID}")" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
@@ -68,7 +73,7 @@
         </div>
     </div>
 </div>
-</div>
+
 
 
 

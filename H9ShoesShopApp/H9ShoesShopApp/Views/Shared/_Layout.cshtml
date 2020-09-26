@@ -83,7 +83,7 @@
                                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">@user.FullName </span>
                                                 <img style="width: 30px; height: 30px;border-radius: 50%;" class="img-profile rounded-circle" src="~/images/Avatar/@user.ImagePath">
                                             </a>
-                                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                            <div class="dropdown-menu  " aria-labelledby="userDropdown" >
                                                 @if (roles.Count != 0)
                                                 {
                                                     <a class="dropdown-item" asp-controller="Category" asp-action="Index">
@@ -92,13 +92,14 @@
                                                     </a>
                                                 }
 
-                                                <div class="dropdown-divider"></div>
+                                                <div class="dropdown-item"></div>
                                                 <button class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
                                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                                     Đăng xuất
                                                 </button>
                                             </div>
                                         </li>
+                                        
                                     }
                                     else
                                     {
@@ -143,7 +144,7 @@
                                                 <p>Total: <span class="text-info">@(total != ""?total:"0đ")</span></p>
                                             </div>
                                         </div>
-                                        @if (result != null && result.Count >0)
+                                        @if (result != null && result.Count > 0)
                                         {
                                             @foreach (var item in result)
                                             {
@@ -152,8 +153,8 @@
                                                         <img src="~/images/Product/@item.Product.PathImage">
                                                     </div>
                                                     <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                                                        <p>@item.Product.ProductName <a class="btn btn-danger" style="font-size:12px" asp-controller="Cart" asp-action="Delete" asp-route-id="@item.Product.ProductId" >Xóa</a></p>
-                                                        <span class="price text-info"> @currency((item.Product.Price - item.Product.Price * item.Product.Sale / 100)*@item.Quantity)</span> <span class="count"> Số lượng: @item.Quantity</span>
+                                                        <p>@item.Product.ProductName <a class="btn btn-danger" style="font-size:12px" asp-controller="Cart" asp-action="Delete" asp-route-id="@item.Product.ProductId">Xóa</a></p>
+                                                        <span class="price text-info"> @currency((item.Product.Price - item.Product.Price * item.Product.Sale / 100) * @item.Quantity)</span> <span class="count"> Số lượng: @item.Quantity</span>
                                                     </div>
                                                 </div>
                                             }
@@ -165,7 +166,12 @@
                                         }
                                         else
                                         {
-                                            <div class="text-danger" style="text-align:center;font-size:15px"> Giỏ hàng của bạn chưa có gì <i class="fas fa-sad-tear"></i><br> <a class="btn btn-danger" asp-controller="Home" asp-action="Index">Cùng nhau mua sắm nào!!!</a></div>
+                                            <div class="text-danger" style="text-align:center;font-size:15px">
+                                                Giỏ hàng của bạn chưa có gì <i class="fas fa-sad-tear"></i><br>
+                                                                                                           <img src="~/images/empty.PNG" />
+
+                                                <a class="btn btn-danger" asp-controller="Home" asp-action="Index">Cùng nhau mua sắm nào!!!</a>
+                                            </div>
                                         }
                                     </div>
                                 </div>

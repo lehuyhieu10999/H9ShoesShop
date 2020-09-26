@@ -1,0 +1,127 @@
+﻿@model List<Product>
+@{
+    ViewBag.Title = "Quản lý sản phẩm loại";
+    var category = ViewBag.Category as Category;
+    @functions
+        {
+        public string currency(float money1)
+        {
+            var vietnam = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+            string money2 = String.Format(vietnam, "{0:c}", money1);
+            int start = money2.Length - 1;
+            return money2.Replace(",00", "");
+        }
+    }
+}
+<div class="container-fluid">
+    <div class="card-header row py-3">
+        <div>
+            <h3 class="m-0 font-weight-bold text-primary">@ViewBag.Title @category.CategoryName </h3>
+        </div>
+        <div class="ml-md-auto" style="padding-right:30px">
+            <a asp-controller="Product" asp-action="Create" class="btn btn-warning" style="width:150px"><i class="fas fa-plus-square"></i>  Tạo mới</a>
+        </div>
+        <div class="ml-md-auto" style="padding-right:30px">
+            <a asp-controller="Category" asp-action="index"  class="btn btn-success" style="width:150px"><i class="fas fa-backward"></i>  Trở về</a>
+        </div>
+        <div class="ml-auto" style="padding-right:30px">
+            <a asp-controller="Product" asp-action="RecycleBin" class="btn btn-danger" style="width:150px"><i class="fas fa-trash"></i>  Thùng rác</a>
+        </div>
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="thead-dark">
+                        <tr style="text-align:center">
+                            <th scope="col">ID</th>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th scope="col">Tên loại</th>
+                            <th scope="col">Tên thương hiệu</th>
+                            <th scope="col">Giá</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col">Thao tác</th>
+
+                        </tr>
+                    </thead>
+                    <tbody style="text-align:center">
+                        @foreach (var item in Model)
+                        {
+                            <tr class="fo">
+                                <td scope="row">@item.ProductId</td>
+                                <td scope="col">@item.ProductName</td>
+                                <td scope="col">@category.CategoryName</td>
+                                <td scope="col">@item.Brand</td>
+                                <td scope="col">@currency(item.Price)</td>
+                                <td><input asp-for="@item.Status" onclick="site.ChangeStatus(@item.ProductId,this)" /></td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@($"exampleModalLong{@item.ProductId}")">
+                                        Xóa
+                                    </button>
+                                    <a type="button" class="btn btn-primary" asp-controller="Product" asp-action="Edit" asp-route-id="@item.ProductId">
+                                        Cập nhật
+                                    </a>
+                                    <div class="modal fade" id="@($"exampleModalLong{@item.ProductId}")" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Xóa @item.ProductName?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Bạn chắc chứ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                                    <a type="button" class="btn btn-primary" asp-controller="Product" asp-action="Delete" asp-route-id="@item.ProductId">Xóa</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+    <script>
+        var site = {};
+        $(document).ready(function () {
+            $('#dataTable').dataTable();
+        });
+        site.ChangeStatus = function (id, input) {
+            var result = confirm('Bạn muốn thay đổi trạng thái của sản phẩm có ID = ' + id)
+            if (result) {
+                $.ajax({
+                    url: `/Product/${id}/${input.checked}`,
+                    method: "GET",
+                    dataType: "json",
+                    success: function () {
+                        alert('Thành công!');
+                    },
+                });
+            } else {
+                input.checked = !input.checked;
+                alert("Đã hủy");
+            }
+
+        };
+
+    </script>
+}
+

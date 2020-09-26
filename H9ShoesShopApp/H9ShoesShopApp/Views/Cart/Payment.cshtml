@@ -162,7 +162,8 @@
                     mobile: {
                         required: true,
                         minlength: 8,
-                        maxlength:11
+                        maxlength: 11,
+                        regex: "(84|0[3|5|7|8|9])+([0-9]{8})"
                     },
                 },
                 messages: {
@@ -176,7 +177,9 @@
                     },
                     mobile: {
                         required: "Vui lòng nhập số điện thoại",
-                        minlength: "Số máy quý khách vừa nhập là số không có thực"
+                        minlength: "Số máy quý khách vừa nhập là số không có thực",
+                        maxlength: "Vui lòng nhập đúng số điện thoại",
+                        regex: "Số điện thoại không có thực"
                     },
                 },
             }

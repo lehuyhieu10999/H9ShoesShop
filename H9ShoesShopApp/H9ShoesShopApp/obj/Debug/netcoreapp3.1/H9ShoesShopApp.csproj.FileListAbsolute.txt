@@ -431,3 +431,4 @@ C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\ob
 C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Order\RecycleBin.cshtml.g.cs
 C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Order\Detail.cshtml.g.cs
 C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Order\_ViewStart.cshtml.g.cs
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\Razor\Views\Product\ProductbyCategory.cshtml.g.cs

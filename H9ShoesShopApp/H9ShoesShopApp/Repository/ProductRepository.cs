@@ -190,9 +190,26 @@ namespace H9ShoesShopApp.Models.Repository
             return context.SaveChanges() ;
         }
 
-        public int UpdateCategory(CategoryEdit categoryEdit)
+        public ICollection<Product> ProductByCategory(int categoryid)
         {
-            throw new NotImplementedException();
+            List<Product> products = (from s in context.Products
+                                where s.CategoryId == categoryid && !s.IsDelete
+                                select (new Product()
+                                {
+                                    ProductId = s.ProductId,
+                                    ProductName = s.ProductName,
+                                    Category = s.Category,
+                                    Price = s.Price,                                   
+                                    CategoryId = s.CategoryId,
+                                    IsDelete = s.IsDelete,
+                                    Brand = s.Brand,
+                                    Description = s.Description,
+                                    PathImage = s.PathImage,
+                                    Sale = s.Sale,
+                                    Size = s.Size,
+                                    Status = s.Status
+                                })).ToList();
+            return products;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿@model List<Category>
+﻿@inject AppDbContext context;
+@model List<Category>
 @{
     ViewBag.Title = "Quản lý danh mục giày";
     var categories = ViewBag.Categories as List<Category>;
@@ -15,6 +16,7 @@
         <div class="ml-auto" style="padding-right:30px">
             <a asp-controller="Category" asp-action="RecycleBin" class="btn btn-danger" style="width:150px"><i class="fas fa-trash"></i>  Thùng rác</a>
         </div>
+        </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -22,6 +24,7 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Loại</th>
+                        <th scope="col">Số lượng sản phẩm</th>
                         <th scope="col">Trạng thái</th>
                         <th scope="col">Công cụ</th>
                     </tr>
@@ -31,38 +34,55 @@
                     {
                         if (!item.IsDelete)
                         {
-                            <tr class="fo">
-                                <td scope="row" id="idcate">@item.CategoryId</td>
-                                <td scope="col">@item.CategoryName</td>   
-                                <td><input asp-for="@item.Status" onclick="site.ChangeStatus(@item.CategoryId, this)"  /></td>
-                                <td>
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@($"exampleModalLong{@item.CategoryId}")">
-                                        Xóa
-                                    </button>
-                                    <a type="button" class="btn btn-primary" asp-controller="Category" asp-action="Edit" asp-route-id="@item.CategoryId">
-                                        Cập nhật
-                                    </a>
-                                    <div class="modal fade" id="@($"exampleModalLong{@item.CategoryId}")" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle">Xóa @item.CategoryName?</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Bạn chắc chứ?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                                    <a type="button" class="btn btn-danger" asp-controller="Category" asp-action="Delete" asp-route-id="@item.CategoryId">Xóa</a>
-                                                </div>
-                                            </div>
+                    <tr class="fo">
+                        <td scope="row" id="idcate">@item.CategoryId</td>
+                        <td scope="col">@item.CategoryName</td>
+
+
+                        @{
+                            var count = 0;
+                            foreach (var item2 in context.Products)
+                            {
+                                if (item2.CategoryId == item.CategoryId && !item2.IsDelete)
+                                    count++;
+                            }
+
+                        }
+                        <td scope="col">@count</td>
+                        <td><input asp-for="@item.Status" onclick="site.ChangeStatus(@item.CategoryId, this)" /></td>
+                        <td>
+
+                            <a type="button" class="btn btn-primary" asp-controller="Category" asp-action="Edit" asp-route-id="@item.CategoryId">
+                                Cập nhật
+                            </a>
+                            <a type="button" class="btn btn-success" asp-controller="Product" asp-action="ProductbyCategory" asp-route-id="@item.CategoryId">
+                                Xem chi tiết
+                            </a>
+
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@($"exampleModalLong{@item.CategoryId}")">
+                                Xóa
+                            </button>
+                            <div class="modal fade" id="@($"exampleModalLong{@item.CategoryId}")" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Xóa @item.CategoryName?</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Bạn chắc chứ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                            <a type="button" class="btn btn-danger" asp-controller="Category" asp-action="Delete" asp-route-id="@item.CategoryId">Xóa</a>
                                         </div>
                                     </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                         }
                         else continue;
                     }
@@ -70,7 +90,6 @@
             </table>
         </div>
     </div>
-</div>
 </div>
 
 

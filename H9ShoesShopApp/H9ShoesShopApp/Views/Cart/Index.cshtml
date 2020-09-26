@@ -53,7 +53,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                                            <a asp-controller="Cart" asp-action="Delete" asp-route-id="@item.Product.ProductId" class="btn-delete">Xóa</a>
+                                                            <a asp-controller="Cart" asp-action="Delete" asp-route-id="@item.Product.ProductId" class="btn btn-danger">Xóa</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -79,8 +79,8 @@
                     else
                     {
                         <span class="alert alert-danger">Chưa có sản phẩm nào trong giỏ hàng</span>
-                        <br>
-                        <a class="btn btn--blue" asp-controller="Home" asp-action="Index">Tiếp tục mua hàng</a>
+                        <br><br><br>
+                        <a class="btn btn-danger" asp-controller="Home" asp-action="Index">Tiếp tục mua hàng</a>
 
 
                     }

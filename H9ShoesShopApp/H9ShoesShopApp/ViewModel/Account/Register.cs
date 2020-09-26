@@ -27,8 +27,11 @@ namespace H9ShoesShopApp.ViewModel.Account
         public string Address { get; set; }
         [Display(Name = "Giới tính")]
         public string Gender { get; set; }
+        [Required(ErrorMessage = "Ngày sinh là bắt buộc")]
         [Display(Name = "Ngày sinh")]
         public string DoB { get; set; }
+        [Required(ErrorMessage = "Số điện thoại là bắt buộc")]
+        [RegularExpression("(84|0[3|5|7|8|9])+([0-9]{8})",ErrorMessage ="Vui lòng nhập đúng số điện thoại!")]
         [Display(Name = "Số điện thoại")]
         public string PhoneNumber { get; set; }
         [Display(Name = "Cơ quan, công ty")]

@@ -19,5 +19,6 @@ namespace H9ShoesShopApp.Models.Repository
         object showProduct2(); 
         int CreateProduct(ProductCreate productCreate);
         int Update(ProductEdit productEdit);
+        ICollection<Product> ProductByCategory(int categoryid);
     }
 }
