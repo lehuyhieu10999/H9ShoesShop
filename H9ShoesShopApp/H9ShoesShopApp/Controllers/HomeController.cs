@@ -9,38 +9,48 @@ using H9ShoesShopApp.ViewModel;
 using System;
 using H9ShoesShopApp.Helpers;
 using Microsoft.AspNetCore.Http;
+using System.Text.RegularExpressions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using H9ShoesShopApp.Models;
 
 namespace H9ShoesShopApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IProductRepository productRepository;
+        private  IProductRepository productRepository;
         private readonly ICategoryRepository categoryRepository;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly AppDbContext context;
 
-       
+
 
         public HomeController(IProductRepository productRepository,
         ICategoryRepository categoryRepository,
-                                IWebHostEnvironment webHostEnvironment)
+                                IWebHostEnvironment webHostEnvironment,
+                                AppDbContext context)
         {
             this.productRepository = productRepository;
             this.categoryRepository = categoryRepository;
             this.webHostEnvironment = webHostEnvironment;
+            this.context = context;
         }
         [AllowAnonymous]
         public IActionResult Index()
         {
-          var cart =  HttpContext.Session.GetObjectFromJson<List<CartItem>>("CartSession");
+            var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("CartSession");
 
             List<Product> products = productRepository.Gets().Take(20).ToList();
-            List<Product> productsale = (from product in productRepository.Gets() 
-                                         where product.Sale > 0 
-                                         select product).TakeLast(10).ToList();
-            var model = new HomeView()
+            List<Product> productsale = (from product in productRepository.Gets()
+                                         where product.Sale > 0
+                                         orderby product.Sale descending
+                                         select product).Take(20).ToList();
+            var model = new HomeViewModel()
             {
-               products = products,
-               productssale = productsale
+                HomeView = new HomeView
+                {
+                    products = products,
+                    productssale = productsale
+                }
             };
             ViewBag.Categories = GetCategories();
             ViewBag.cart = cart;
@@ -66,23 +76,77 @@ namespace H9ShoesShopApp.Controllers
             ViewBag.categoryid = categoryid;
             return View();
         }
-        
+
+        [AllowAnonymous]
         [HttpPost]
-        [Route("Home/Search/{searchString}")]
-        public ActionResult Search(string searchString)
+        public ActionResult Search(HomeViewModel model)
         {
-            var products = from p in productRepository.Gets()
-                        join c in categoryRepository.Gets() on p.CategoryId equals c.CategoryId
-                        where !p.IsDelete && p.Status && c.Status && !c.Status 
-                        select new { p.ProductId, p.ProductName, p.PathImage, p.Brand, p.Size, p.Description, p.Sale,p.Price,p.CategoryId};
-
-            if (!String.IsNullOrEmpty(searchString))
+            var products = (from p in productRepository.Gets()
+                            join c in categoryRepository.Gets() on p.CategoryId equals c.CategoryId
+                            where !p.IsDelete && p.Status && c.Status && !c.IsDelete
+                            select (new Product()
+                            {
+                                ProductId = p.ProductId,
+                                ProductName = p.ProductName,
+                                PathImage = p.PathImage,
+                                Brand = p.Brand,
+                                Size = p.Size,
+                                Description = p.Description,
+                                Sale = p.Sale,
+                                Price = p.Price,
+                                CategoryId = p.CategoryId
+                            })).ToList();
+            List<Product> result = new List<Product>();
+            var categories = categoryRepository.Gets();
+            if (!String.IsNullOrEmpty(model.Search.SearchString))
             {
-                products = products.Where(p => p.ProductName.Contains(searchString));
-            }
-            return View(products);
-        }
+                string stringsearch = model.Search.SearchString;
+                stringsearch = stringsearch.Trim();
+             var a =   Regex.Replace(stringsearch, @"\s+", " ");
 
+                foreach (var item in products)
+                {
+
+                    if (Regex.Replace(item.ProductName, @"\s+", " ").ToUpper().Contains(a.ToUpper()))
+                        result.Add(item);
+                }
+            }
+            var count = 0;
+            if(result.Count == 0)
+            {
+                result = products;
+                count++;
+                
+            }
+            ViewBag.Searchstring = model.Search.SearchString;
+            ViewBag.products = result;
+            ViewBag.categories = categories;
+            ViewBag.count = count;
+            return View();
+        }
+        [AllowAnonymous]
+        [Route("Home/ProductByCategory/{categoryId}")]
+        public IActionResult ProductByCategory(int categoryId, string? sort)
+        {
+            var data = (from s in context.Products
+                        where s.CategoryId == categoryId && !s.IsDelete
+                        select (new Product()
+                        {
+                            ProductId = s.ProductId,
+                            ProductName = s.ProductName,
+                            Category = s.Category,
+                            Price = s.Price,
+                            CategoryId = s.CategoryId,
+                            IsDelete = s.IsDelete,
+                            Brand = s.Brand,
+                            Description = s.Description,
+                            PathImage = s.PathImage,
+                            Sale = s.Sale,
+                            Size = s.Size,
+                            Status = s.Status
+                        })).ToList();
+            return Json(data);
+        }
 
 
     }

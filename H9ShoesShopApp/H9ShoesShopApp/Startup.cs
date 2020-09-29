@@ -56,14 +56,15 @@ namespace H9ShoesShopApp
             if (env.IsDevelopment())
             { 
                 app.UseDeveloperExceptionPage();
-                app.UseExceptionHandler("/Error");
-                app.UseStatusCodePagesWithRedirects("/Error/{0}");
             }
             else
             {
                 //app.UseExceptionHandler("/Home/Error");
                  //The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+
+                app.UseExceptionHandler("/Error");
+                app.UseStatusCodePagesWithRedirects("/Error/{0}");
             }
             
             app.UseHttpsRedirection();

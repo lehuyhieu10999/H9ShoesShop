@@ -1,4 +1,4 @@
-﻿@model HomeView
+﻿@model HomeViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     var categories = ViewBag.Categories as List<Category>;
@@ -89,13 +89,13 @@
         <div class="row">
             <div class="col">
                 <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
-                    @foreach (var product in Model.products)
+                    @foreach (var product in Model.HomeView.products)
                     {
                         @if (product.Status && !product.IsDelete && product.Sale > 0)
                         {<div class="product-item @product.Category.CategoryId">
                                 <div class="product discount product_filter">
                                     <div class="product_image">
-                                        <a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId"><img style="width:213px;height:213px" src="~/images/Product/@product.PathImage"></a>
+                                        <a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId"><img style="width:100%;height:213px" src="~/images/Product/@product.PathImage"></a>
                                     </div>
                                     <div class="favorite favorite_left"></div>
                                     <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-@product.Sale%</span></div>
@@ -103,7 +103,7 @@
                                         <h6 class="product_name"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">@product.ProductName</a></h6>
                                         <div class="product_price">@currency(@product.Price - @product.Price * @product.Sale / 100)<span>@currency(@product.Price)</span></div>
                                     </div>
-                                    <div style="margin-left:29px;margin-top:15px" class="red_button add_to_cart_button"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">mua ngay</a></div>
+                                    <div style="margin-left: 70px; margin-top: 15px; width: 50%" class="red_button add_to_cart_button"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">mua ngay</a></div>
                                 </div>
                             </div>
                         }
@@ -113,14 +113,14 @@
                             <div class="product-item @product.Category.CategoryId">
                                 <div class="product discount product_filter">
                                     <div class="product_image">
-                                        <a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId"><img style="width:213px;height:213px" src="~/images/Product/@product.PathImage"></a>
+                                        <a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId"><img style="width:100%;height:213px" src="~/images/Product/@product.PathImage"></a>
                                     </div>
                                     <div class="favorite favorite_left"></div>
                                     <div class="product_info">
                                         <h6 class="product_name"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">@product.ProductName</a></h6>
                                         <div class="product_price">@currency(@product.Price - @product.Price * @product.Sale / 100)</div>
                                     </div>
-                                    <div style="margin-left:29px;margin-top:15px" class="red_button add_to_cart_button"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">mua ngay</a></div>
+                                    <div style="margin-left:70px;margin-top:15px;width:50%" class="red_button add_to_cart_button"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">mua ngay</a></div>
                                 </div>
                             </div>
                         }
@@ -188,7 +188,7 @@
                         <div class="owl-carousel owl-theme product_slider">
 
                             <!-- Slide 1 -->
-                            @foreach (var product in Model.productssale)
+                            @foreach (var product in Model.HomeView.productssale)
                             {
                                 @if (product.Status && !product.IsDelete)
                                 {
@@ -196,7 +196,7 @@
                                         <div class="product-item">
                                             <div class="product discount">
                                                 <div class="product_image">
-                                                    <img style="width:213px;height:213px" src="~/images/Product/@product.PathImage">
+                                                    <img style="width:100%;height:190px" src="~/images/Product/@product.PathImage">
                                                 </div>
                                                 <div class="favorite favorite_left"></div>
                                                 <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$@product.Sale%</span></div>
@@ -204,6 +204,7 @@
                                                     <h6 class="product_name"><a href="single.html">@product.ProductName</a></h6>
                                                     <div class="product_price">@currency(@product.Price - @product.Price * @product.Sale / 100)<span>@currency(@product.Price)</span></div>
                                                 </div>
+                                                <div style="margin-left: 58px; margin-top: 15px; width: 50%" class="red_button add_to_cart_button"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">mua ngay</a></div>
                                             </div>
                                         </div>
                                     </div>
@@ -242,7 +243,7 @@
                     <div class="benefit_item d-flex flex-row align-items-center">
                         <div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
                         <div class="benefit_content">
-                            <h6>Thanh toán khi giao hàng</h6>
+                            <h6>Giao hàng tận nhà</h6>
                             <p>Nhớ kiểm tra hàng trước khi thanh toán bạn nhé!</p>
                         </div>
                     </div>

@@ -2,7 +2,7 @@
 @inject SignInManager<ApplicationUser> signInManager
 @inject UserManager<ApplicationUser> userManager
 
-
+@model HomeViewModel
 @{
     var user = await userManager.GetUserAsync(User);
     IList<string> roles = new List<string>();
@@ -55,10 +55,15 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="~/mystyle/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="~/mystyle/css/sb-admin-2.css" rel="stylesheet" />
+   
     <link rel="stylesheet" href="~/theme/plugins/themify-icons/themify-icons.css">
     <link rel="stylesheet" type="text/css" href="~/theme/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="~/theme/styles/single_styles.css">
     <link rel="stylesheet" type="text/css" href="~/theme/styles/single_responsive.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/styles/bootstrap4/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/styles/categories_styles.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/styles/categories_responsive.css">
 
     <link href="~/css/site2.css" rel="stylesheet" />
 </head>
@@ -78,12 +83,12 @@
 
                                     @if (signInManager.IsSignedIn(User))
                                     {
-                                        <li class="nav-item dropdown no-arrow" style="width:100px; margin-left:auto">
+                                        <li class="account" style="width:100px; margin-left:auto">
                                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">@user.FullName </span>
                                                 <img style="width: 30px; height: 30px;border-radius: 50%;" class="img-profile rounded-circle" src="~/images/Avatar/@user.ImagePath">
                                             </a>
-                                            <div class="dropdown-menu  " aria-labelledby="userDropdown" >
+                                            <div class="account_selection">
                                                 @if (roles.Count != 0)
                                                 {
                                                     <a class="dropdown-item" asp-controller="Category" asp-action="Index">
@@ -99,7 +104,7 @@
                                                 </button>
                                             </div>
                                         </li>
-                                        
+
                                     }
                                     else
                                     {
@@ -123,12 +128,27 @@
 
             <!-- Main Navigation -->
 
-            <div class="main_nav_container">
+            <div class="main_nav_container" style="height:122px">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12 text-right">
                             <div class="logo_container">
                                 <a asp-controller="Home" asp-action="Index">H9<span>Shoes Shop</span></a>
+                            </div>
+                            <div class="logo_container" style="margin-left:300px;width:300px">
+                                <form asp-controller="home" asp-action="search" method="post">
+                                    <div class="input-group md-form form-sm form-2 pl-0" style="width:450px">
+                                        <input asp-for="@Model.Search.SearchString" class="form-control my-0 py-1 red-border" id="searchString" type="text" placeholder="Nhập tên sản phẩm bạn muốn tìm" aria-label="Search">
+
+                                        <div class="input-group-append">
+                                            <button type="submit" class="input-group-text red lighten-3" id="basic-text1">
+                                                <i class="fas fa-search text-grey" id="SearchBtn"
+                                                   aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
                             </div>
                             <nav class="navbar ml-6">
                                 <div class="dropdown">
@@ -168,7 +188,7 @@
                                         {
                                             <div class="text-danger" style="text-align:center;font-size:15px">
                                                 Giỏ hàng của bạn chưa có gì <i class="fas fa-sad-tear"></i><br>
-                                                                                                           <img src="~/images/empty.PNG" />
+                                                <img src="~/images/empty.PNG" />
 
                                                 <a class="btn btn-danger" asp-controller="Home" asp-action="Index">Cùng nhau mua sắm nào!!!</a>
                                             </div>
@@ -268,7 +288,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Xác nhận rời đi?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -298,8 +318,11 @@
     <script src="~/mystyle/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="~/mystyle/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="~/mystyle/js/demo/datatables-demo.js"></script>
+
+   
+    <script src="~/theme/js/categories_custom.js"></script>
     @RenderSection("Scripts", false)
 </body>
-
 </html>
+
 

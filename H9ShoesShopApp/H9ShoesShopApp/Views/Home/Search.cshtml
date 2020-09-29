@@ -1,54 +1,275 @@
-﻿@model List<Product>
+﻿@using System
 @{
     ViewData["Title"] = "H9 Shoes";
+    List<Product> products = ViewBag.products;
+    var searchstring = ViewBag.Searchstring;
+    var count = ViewBag.count ;
+    var categories = ViewBag.categories as List<Category>;
+    @functions
+        {
+        public string currency(float money1)
+        {
+            var vietnam = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+            string money2 = String.Format(vietnam, "{0:c}", money1);
+            int start = money2.Length - 1;
+            return money2.Replace(",00", "");
+        }
+    }
 }
 
 
-<div class="new_arrivals" style="margin-top: 150px;">
-    <div class="container">
-        <div class="text-center">
-            <h2 style="color:darkblue"><u>Products</u></h2>
-        </div>
-        <div class="row">
-            <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
-                <!-- Products-->
-                @if (Model != null)
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center" id="ketqua">
+                @if (@count == 0)
                 {
-                    foreach (var item in Model)
-                    {
-                        <div class="product-item men">
-                            <div class="product discount product_filter">
-                                <div class="product_image">
-                                    <a asp-controller="Home" asp-action="Detail" asp-route-id="@item.ProductId">
-                                        <img src="~/images/items/@item.PathImage" alt="">
-                                    </a>
+                    <ul>
+                        Kết quả tìm kiếm cho "@searchstring" (@products.Count kết quả)
+                    </ul>
+                }
+                else
+                {
+                    <ul class="text-danger" style="font-size: 17px">
+                        Không có kết quả nào cho "@searchstring"! Vui lòng kiểm tra lại sản phẩm bạn muốn tìm kiếm!!
+                    </ul>
+                }
+
+            </div>
+
+            <!-- Sidebar -->
+
+            <div style="display:flex">
+                <div class="sidebar">
+                    <div class="sidebar_section">
+                        <div class="sidebar_title">
+                            <h5>Loại giày</h5>
+                        </div>
+                        <ul class="sidebar_categories">
+                            @foreach (var item in categories)
+                            {
+                                <li><a href="#" onclick="site.choose(@item.CategoryId)">@item.CategoryName</a></li>
+                            }
+                        </ul>
+                    </div>
+
+                    <!-- Price Range Filtering -->
+                    <div class="sidebar_section">
+                        <div class="sidebar_title">
+                            <h5>Lọc giá</h5>
+                        </div>
+                        <p>
+                            <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                        </p>
+                        <div id="slider-range"></div>
+                        <div class="filter_button"><span>filter</span></div>
+                    </div>
+
+                </div>
+
+                <!-- Main Content -->
+
+                <div class="main_content">
+
+                    <!-- Products -->
+
+                    <div class="products_iso">
+                        <div class="row">
+                            <div class="col">
+
+                                <!-- Product Sorting -->
+
+                                <div class="product_sorting_container product_sorting_container_top">
+                                    <ul class="product_sorting">
+                                        <li>
+                                            <span class="type_sorting_text" id="">Default Sorting</span>
+                                            <i class="fa fa-angle-down"></i>
+                                            <ul class="sorting_type">
+                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Default Sorting</span></li>
+                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Price</span></li>
+                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Product Name</span></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="favorite favorite_left"></div>
-                                @if (item.Sale > 0)
-                                {
-                                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-@item.Sale</span></div>
-                                }
-                                <div class="product_info">
-                                    <h6 class="product_name"><a asp-controller="Home" asp-action="Detail" asp-route-id="@item.ProductId">@item.ProductName</a></h6>
-                                    @if (item.Sale > 0)
+
+                                <!-- Product Grid -->
+
+                                <div class="product-grid" id="product">
+
+                                    <!-- Product 1 -->
+
+                                    @foreach (var item in products)
                                     {
-                                        <div class="product_price">$@(item.Price-item.Price*item.Sale/100)<span>$@item.Price</span></div>
-                                    }
-                                    else
-                                    {
-                                        <div class="product_price">$@item.Price</div>
+                                        <div class="product-item @item.CategoryId">
+                                            <div class="product discount product_filter">
+                                                <div class="product_image">
+                                                    <img src="~/images/Product/@item.PathImage" alt="">
+                                                </div>
+                                                <div class="favorite favorite_left"></div>
+                                                @if (item.Sale > 0)
+                                                {
+                                                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                                        <span>-@item.Sale %</span>
+                                                    </div>
+                                                    <div class="product_info">
+                                                        <h6 class="product_name"><a asp-controller="Home" asp-action="Cart" asp-route-id="@item.ProductId">@item.ProductName</a></h6>
+                                                        <div class="product_price">@currency(item.Price - item.Price * item.Sale / 100)<span>@currency(item.Price)</span></div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="product_info">
+                                                        <h6 class="product_name"><a asp-controller="Home" asp-action="Cart" asp-route-id="@item.ProductId">@item.ProductName</a></h6>
+                                                        <div class="product_price">@currency(item.Price - item.Price * item.Sale / 100)<span>@currency(item.Price)</span></div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div class="red_button add_to_cart_button" style="width:60%;margin-left:40px;"><a asp-controller="Home" asp-action="Cart" asp-route-id="@item.ProductId">mua ngay</a></div>
+                                        </div>
                                     }
 
                                 </div>
                             </div>
-                            <div class="red_button add_to_cart_button"><a asp-controller="Home" asp-action="Detail" asp-route-id="@item.ProductId">add to cart</a></div>
                         </div>
-                    }
-                }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Benefit -->
+
+    <div class="benefit">
+        <div class="container">
+            <div class="row benefit_row">
+                <div class="col-lg-3 benefit_col">
+                    <div class="benefit_item d-flex flex-row align-items-center">
+                        <div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
+                        <div class="benefit_content">
+                            <h6>free shipping</h6>
+                            <p>Suffered Alteration in Some Form</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 benefit_col">
+                    <div class="benefit_item d-flex flex-row align-items-center">
+                        <div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+                        <div class="benefit_content">
+                            <h6>cach on delivery</h6>
+                            <p>The Internet Tend To Repeat</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 benefit_col">
+                    <div class="benefit_item d-flex flex-row align-items-center">
+                        <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
+                        <div class="benefit_content">
+                            <h6>45 days return</h6>
+                            <p>Making it Look Like Readable</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 benefit_col">
+                    <div class="benefit_item d-flex flex-row align-items-center">
+                        <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                        <div class="benefit_content">
+                            <h6>opening all week</h6>
+                            <p>8AM - 09PM</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 
+<script>
+    var site = {};
+    site.choose = function (categoryId) {
+        $.ajax({
+            url: `/Home/ProductByCategory/${categoryId}`,
+            method: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
 
+                console.log(data)
+                $("#ketqua").empty();
+                $("#ketqua").append(`<ul>
+                        Kết quả tìm kiếm cho "${data[0]['category']['categoryName']}" (${data.length} kết quả)
+                    </ul>`);
+
+                $("#product").empty();
+                $.each(data, function (key, value) {
+
+
+
+                    if (value['sale'] > 0) {
+
+                         z = value["price"] - (value["price"] * value["sale"] / 100);
+
+                        
+                        z = z.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                        var x = value["price"];
+                        x = x.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                        
+
+
+
+                        $("#product").append(`
+
+                             <div class="product-item">
+                               <div class="product discount product_filter">
+                                   <div class="product_image">
+                                       <img src="/images/Product/${value["pathImage"]}" alt="">
+                                   </div>
+                                   <div class="favorite favorite_left"></div>
+                                       <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                           <span>-${value["sale"]} %</span>
+                                       </div>
+                                       <div class="product_info">
+                                           <h6 class="product_name"><a asp-controller="Home" asp-action="Cart" asp-route-id="">${value["productName"]}</a></h6>
+                                            <div class="product_price">${z}<span>${x}</span></div>
+                                       </div>
+                               </div>
+                               <div class="red_button add_to_cart_button" style="width:60%;margin-left:40px;"><a href='/Home/Cart/${value["productId"]}' >mua ngay</a></div>
+                            </div>
+                        `);
+                    } else {
+                        var x = value["price"];
+                        x = x.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+
+                        $("#product").append(`
+                            <div class="product-item">
+                               <div class="product discount product_filter">
+                                   <div class="product_image">
+                                       <img src="/images/Product/${value["pathImage"]}" alt="">
+                                   </div>
+                                   <div class="favorite favorite_left"></div>
+
+                                       <div class="product_info">
+                                           <h6 class="product_name"><a asp-controller="Home" asp-action="Cart" asp-route-id="">${value["productName"]}</a></h6>
+                                           <div class="product_price">${x}<span></span></div>
+                                       </div>
+                               </div>
+                               <div class="red_button add_to_cart_button" style="width:60%;margin-left:40px;"><a href='/Home/Cart/${value["productId"]}'>mua ngay</a></div>
+                            </div>
+`
+                        );
+
+
+                    }
+                });
+
+            }
+        });
+    }
+
+
+</script>

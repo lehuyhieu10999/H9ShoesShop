@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Identity;
 using H9ShoesShopApp.Models;
 using System.Threading.Tasks;
+using H9ShoesShopApp.ViewModel;
 
 namespace H9ShoesShopApp.Controllers
 {
@@ -46,12 +47,14 @@ namespace H9ShoesShopApp.Controllers
         public IActionResult Index()
         {
             var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>(CartSession);
-            var list = new List<CartItem>();
+            var model = new HomeViewModel();
+            
             if(cart != null)
             {
-                list = cart;
+                model.CartItems = cart; 
             }
-            return View(list);
+            
+            return View(model);
         }
         [AllowAnonymous]
         public IActionResult DeleteAll()
@@ -128,12 +131,14 @@ namespace H9ShoesShopApp.Controllers
         public ActionResult Payment()
         {
             var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>(CartSession);
-            var list = new List<CartItem>();
+            var model = new HomeViewModel();
+
             if (cart != null)
             {
-                list = cart;
+                model.CartItems = cart;
             }
-            return View(list);
+
+            return View(model);
         }
 
         [HttpPost]
