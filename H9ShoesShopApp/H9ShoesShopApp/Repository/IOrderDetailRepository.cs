@@ -12,5 +12,6 @@ namespace H9ShoesShopApp.Repository
         bool Insert(OrderDetail detail);
         OrderDetail Get(int orderdetailId);
         OrderDetail GetbyOrder(int idorder);
+        List<OrderDetail> Gets();
     };
 }

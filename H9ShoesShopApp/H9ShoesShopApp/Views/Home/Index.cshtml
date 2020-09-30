@@ -3,8 +3,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var categories = ViewBag.Categories as List<Category>;
     var cart = ViewBag.cart as List<CartItem>;
-   
-    
+
+
     @functions
         {
         public string currency(float money1)
@@ -47,14 +47,14 @@
             <div class="col-md-4">
                 <div class="banner_item align-items-center" style="        background-image: url(/theme/images/blog_3.jpg)">
                     <div class="banner_category">
-                        <a href="#sale">Best Saler's</a>
+                        <a href="#sale">Best Sale</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="banner_item align-items-center" style="        background-image: url(/theme/images/banner_3.jpg)">
                     <div class="banner_category">
-                        <a href="#buynow">men's</a>
+                        <a href="#selling">Men's</a>
                     </div>
                 </div>
             </div>
@@ -64,12 +64,12 @@
 
 <!-- New Arrivals -->
 
-<div class="new_arrivals">
+<div class="new_arrivals" id="buynow">
     <div class="container">
         <div class="row">
             <div class="col text-center">
                 <div class="section_title new_arrivals_title">
-                    <h2 id="buynow">New Arrivals</h2>
+                    <h2 >Trending</h2>
                 </div>
             </div>
         </div>
@@ -133,143 +133,215 @@
 
 
 
-    <div class="deal_ofthe_week">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="deal_ofthe_week_img">
-                        <img src="~/theme/images/deal_ofthe_week.png" alt="">
-                    </div>
+<div class="deal_ofthe_week">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="deal_ofthe_week_img">
+                    <img src="~/theme/images/deal_ofthe_week.png" alt="">
                 </div>
-                <div class="col-lg-6 text-right deal_ofthe_week_col">
-                    <div class="deal_ofthe_week_content d-flex flex-column align-items-center float-right">
-                        <div class="section_title">
-                            <h2>Deal Of The Week</h2>
-                        </div>
-                        <ul class="timer">
-                            <li class="d-inline-flex flex-column justify-content-center align-items-center">
-                                <div id="day" class="timer_num">03</div>
-                                <div class="timer_unit">Ngày</div>
-                            </li>
-                            <li class="d-inline-flex flex-column justify-content-center align-items-center">
-                                <div id="hour" class="timer_num">15</div>
-                                <div class="timer_unit">Giờ</div>
-                            </li>
-                            <li class="d-inline-flex flex-column justify-content-center align-items-center">
-                                <div id="minute" class="timer_num">45</div>
-                                <div class="timer_unit">Phút</div>
-                            </li>
-                            <li class="d-inline-flex flex-column justify-content-center align-items-center">
-                                <div id="second" class="timer_num">23</div>
-                                <div class="timer_unit">Giây</div>
-                            </li>
-                        </ul>
-                        <div class="red_button deal_ofthe_week_button"><a href="#buynow">Đặt hàng ngay</a></div>
+            </div>
+            <div class="col-lg-6 text-right deal_ofthe_week_col">
+                <div class="deal_ofthe_week_content d-flex flex-column align-items-center float-right">
+                    <div class="section_title">
+                        <h2>Deal Of The Week</h2>
                     </div>
+                    <ul class="timer">
+                        <li class="d-inline-flex flex-column justify-content-center align-items-center">
+                            <div id="day" class="timer_num">03</div>
+                            <div class="timer_unit">Ngày</div>
+                        </li>
+                        <li class="d-inline-flex flex-column justify-content-center align-items-center">
+                            <div id="hour" class="timer_num">15</div>
+                            <div class="timer_unit">Giờ</div>
+                        </li>
+                        <li class="d-inline-flex flex-column justify-content-center align-items-center">
+                            <div id="minute" class="timer_num">45</div>
+                            <div class="timer_unit">Phút</div>
+                        </li>
+                        <li class="d-inline-flex flex-column justify-content-center align-items-center">
+                            <div id="second" class="timer_num">23</div>
+                            <div class="timer_unit">Giây</div>
+                        </li>
+                    </ul>
+                    <div class="red_button deal_ofthe_week_button"><a href="#buynow">Đặt hàng ngay</a></div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Best Sellers -->
+<!-- Best Sellers -->
 
-    <div class="best_sellers">
-        <div class="container">
-            <div class="row">
-                <div class="col text-center">
-                    <div class="section_title new_arrivals_title">
-                        <h2 id="sale">Best Sellers</h2>
-                    </div>
+<div class="best_sellers" id="sale">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <div class="section_title new_arrivals_title">
+                    <h2>Best Sale</h2>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <div class="product_slider_container">
-                        <div class="owl-carousel owl-theme product_slider">
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="product_slider_container">
+                    <div class="owl-carousel owl-theme product_slider">
 
-                            <!-- Slide 1 -->
-                            @foreach (var product in Model.HomeView.productssale)
+                        <!-- Slide 1 -->
+                        @foreach (var product in Model.HomeView.productssale)
+                        {
+                            @if (product.Status && !product.IsDelete)
                             {
-                                @if (product.Status && !product.IsDelete)
-                                {
-                                    <div class="owl-item product_slider_item">
-                                        <div class="product-item">
-                                            <div class="product discount">
-                                                <div class="product_image">
-                                                    <img style="width:100%;height:190px" src="~/images/Product/@product.PathImage">
-                                                </div>
-                                                <div class="favorite favorite_left"></div>
-                                                <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$@product.Sale%</span></div>
-                                                <div class="product_info">
-                                                    <h6 class="product_name"><a href="single.html">@product.ProductName</a></h6>
-                                                    <div class="product_price">@currency(@product.Price - @product.Price * @product.Sale / 100)<span>@currency(@product.Price)</span></div>
-                                                </div>
-                                                <div style="margin-left: 58px; margin-top: 15px; width: 50%" class="red_button add_to_cart_button"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">mua ngay</a></div>
+                                <div class="owl-item product_slider_item">
+                                    <div class="product-item">
+                                        <div class="product discount">
+                                            <div class="product_image">
+                                                <img style="width:100%;height:190px" src="~/images/Product/@product.PathImage">
                                             </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$@product.Sale%</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">@product.ProductName</a></h6>
+                                                <div class="product_price">@currency(@product.Price - @product.Price * @product.Sale / 100)<span>@currency(@product.Price)</span></div>
+                                            </div>
+                                            <div style="margin-left: 58px; margin-top: 15px; width: 50%" class="red_button add_to_cart_button"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">mua ngay</a></div>
                                         </div>
                                     </div>
-                                }
+                                </div>
                             }
-                        </div>
-                        <!-- Slider Navigation -->
+                        }
+                    </div>
+                    <!-- Slider Navigation -->
 
-                        <div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
-                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                        </div>
-                        <div class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
-                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                        </div>
+                    <div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                    </div>
+                    <div class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Benefit -->
 
-    <div class="benefit">
-        <div class="container">
-            <div class="row benefit_row">
-                <div class="col-lg-3 benefit_col">
-                    <div class="benefit_item d-flex flex-row align-items-center">
-                        <div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
-                        <div class="benefit_content">
-                            <h6>Miễn phí vận chuyển</h6>
-                            <p>Hãy để chúng tôi đem đến cho bạn sự an tâm!</p>
+
+<div class="best_sellers" id="selling">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <div class="section_title new_arrivals_title">
+                    <h2 id="sale">Best Sellers</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="product_slider_container">
+                    <div class="owl-carousel owl-theme product_slider">
+
+                        <!-- Slide 1 -->
+                        @foreach (var product in Model.HomeView.bestbuyproducts)
+                        {
+                            @if (product.Status && !product.IsDelete && product.Sale > 0)
+                            {<div class="owl-item product_slider_item">
+                                    <div class="product-item">
+                                        <div class="product discount">
+                                            <div class="product_image">
+                                                <img style="width:100%;height:190px" src="~/images/Product/@product.PathImage">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$@product.Sale%</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">@product.ProductName</a></h6>
+                                                <div class="product_price">@currency(@product.Price - @product.Price * @product.Sale / 100)<span>@currency(@product.Price)</span></div>
+                                            </div>
+                                            <div style="margin-left: 58px; margin-top: 15px; width: 50%" class="red_button add_to_cart_button"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">mua ngay</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else if (product.Status && !product.IsDelete && product.Sale == 0)
+                            {
+
+                    <div class="owl-item product_slider_item">
+                        <div class="product-item">
+                            <div class="product discount">
+                                <div class="product_image">
+                                    <img style="width:100%;height:190px" src="~/images/Product/@product.PathImage">
+                                </div>
+                                <div class="favorite favorite_left"></div>
+                                <div class="product_info">
+                                    <h6 class="product_name"><a href="single.html">@product.ProductName</a></h6>
+                                    <div class="product_price">@currency(@product.Price)<span></span></div>
+                                </div>
+                                <div style="margin-left: 58px; margin-top: 15px; width: 50%" class="red_button add_to_cart_button"><a asp-controller="Home" asp-action="Cart" asp-route-id="@product.ProductId">mua ngay</a></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 benefit_col">
-                    <div class="benefit_item d-flex flex-row align-items-center">
-                        <div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
-                        <div class="benefit_content">
-                            <h6>Giao hàng tận nhà</h6>
-                            <p>Nhớ kiểm tra hàng trước khi thanh toán bạn nhé!</p>
-                        </div>
+                            }
+                        }
                     </div>
-                </div>
-                <div class="col-lg-3 benefit_col">
-                    <div class="benefit_item d-flex flex-row align-items-center">
-                        <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
-                        <div class="benefit_content">
-                            <h6>15 ngày đổi trả miễn phí</h6>
-                            <p></p>
-                        </div>
+                    <!-- Slider Navigation -->
+
+                    <div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
                     </div>
-                </div>
-                <div class="col-lg-3 benefit_col">
-                    <div class="benefit_item d-flex flex-row align-items-center">
-                        <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
-                        <div class="benefit_content">
-                            <h6>Luôn chào đón bạn!</h6>
-                            <p>8AM - 09PM</p>
-                        </div>
+                    <div class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-   
+<!-- Benefit -->
+
+<div class="benefit">
+    <div class="container">
+        <div class="row benefit_row">
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>Miễn phí vận chuyển</h6>
+                        <p>Hãy để chúng tôi đem đến cho bạn sự an tâm!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>Giao hàng tận nhà</h6>
+                        <p>Nhớ kiểm tra hàng trước khi thanh toán bạn nhé!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>15 ngày đổi trả miễn phí</h6>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>Luôn chào đón bạn!</h6>
+                        <p>8AM - 09PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 

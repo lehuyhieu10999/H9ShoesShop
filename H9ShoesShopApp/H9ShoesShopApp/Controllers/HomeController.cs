@@ -12,6 +12,10 @@ using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using H9ShoesShopApp.Models;
+using H9ShoesShopApp.Repository;
+using Microsoft.Data.SqlClient;
+using Dapper;
+using System.Collections;
 
 namespace H9ShoesShopApp.Controllers
 {
@@ -19,6 +23,7 @@ namespace H9ShoesShopApp.Controllers
     {
         private  IProductRepository productRepository;
         private readonly ICategoryRepository categoryRepository;
+        private readonly IOrderDetailRepository orderDetailRepository;
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly AppDbContext context;
 
@@ -27,11 +32,13 @@ namespace H9ShoesShopApp.Controllers
         public HomeController(IProductRepository productRepository,
         ICategoryRepository categoryRepository,
                                 IWebHostEnvironment webHostEnvironment,
+                               IOrderDetailRepository orderDetailRepository,
                                 AppDbContext context)
         {
             this.productRepository = productRepository;
             this.categoryRepository = categoryRepository;
             this.webHostEnvironment = webHostEnvironment;
+            this.orderDetailRepository = orderDetailRepository;
             this.context = context;
         }
         [AllowAnonymous]
@@ -44,12 +51,32 @@ namespace H9ShoesShopApp.Controllers
                                          where product.Sale > 0
                                          orderby product.Sale descending
                                          select product).Take(20).ToList();
+
+            var connectionString = "Server=.\\SQLExpress;Database=H9ShoesDb;Trusted_Connection=True;";
+            List<int> eventName = new List<int>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+               eventName = connection.Query<int>("select p.ProductId from (select Top(10) count(OrderDetails.ProductId) as countProductId, " +
+                   "OrderDetails.ProductId as ProductId  from Products inner join OrderDetails on Products.ProductId = OrderDetails.ProductID " +
+                   "group by OrderDetails.ProductID " +
+                   "order by countProductId desc) as p").ToList();
+            
+            }
+            List<Product> eventNameProduct = new List<Product>();
+
+            foreach(var item in eventName)
+            {
+                eventNameProduct.Add(productRepository.Get(item));
+            }
+
             var model = new HomeViewModel()
             {
                 HomeView = new HomeView
                 {
                     products = products,
-                    productssale = productsale
+                    productssale = productsale,
+                    bestbuyproducts = eventNameProduct
                 }
             };
             ViewBag.Categories = GetCategories();
@@ -112,7 +139,7 @@ namespace H9ShoesShopApp.Controllers
                 }
             }
             var count = 0;
-            if(result.Count == 0)
+            if(result.Count == 0 || model.Search.SearchString =="")
             {
                 result = products;
                 count++;
@@ -126,26 +153,74 @@ namespace H9ShoesShopApp.Controllers
         }
         [AllowAnonymous]
         [Route("Home/ProductByCategory/{categoryId}")]
-        public IActionResult ProductByCategory(int categoryId, string? sort)
+        public IActionResult ProductByCategory(int categoryId, int sort = 0)
         {
-            var data = (from s in context.Products
-                        where s.CategoryId == categoryId && !s.IsDelete
-                        select (new Product()
-                        {
-                            ProductId = s.ProductId,
-                            ProductName = s.ProductName,
-                            Category = s.Category,
-                            Price = s.Price,
-                            CategoryId = s.CategoryId,
-                            IsDelete = s.IsDelete,
-                            Brand = s.Brand,
-                            Description = s.Description,
-                            PathImage = s.PathImage,
-                            Sale = s.Sale,
-                            Size = s.Size,
-                            Status = s.Status
-                        })).ToList();
-            return Json(data);
+            List<Product> data = new List<Product>();
+            switch (sort)
+            {
+                case 0:
+                     data = (from s in context.Products
+                                where s.CategoryId == categoryId && !s.IsDelete
+                                orderby s.CategoryId
+                                select (new Product()
+                                {
+                                    ProductId = s.ProductId,
+                                    ProductName = s.ProductName,
+                                    Category = s.Category,
+                                    Price = s.Price,
+                                    CategoryId = s.CategoryId,
+                                    IsDelete = s.IsDelete,
+                                    Brand = s.Brand,
+                                    Description = s.Description,
+                                    PathImage = s.PathImage,
+                                    Sale = s.Sale,
+                                    Size = s.Size,
+                                    Status = s.Status
+                                })).ToList();
+                    return Json(data);
+                case 1:
+                     data = (from s in context.Products
+                                 where s.CategoryId == categoryId && !s.IsDelete
+                                 orderby s.Price
+                                 select (new Product()
+                                 {
+                                     ProductId = s.ProductId,
+                                     ProductName = s.ProductName,
+                                     Category = s.Category,
+                                     Price = s.Price,
+                                     CategoryId = s.CategoryId,
+                                     IsDelete = s.IsDelete,
+                                     Brand = s.Brand,
+                                     Description = s.Description,
+                                     PathImage = s.PathImage,
+                                     Sale = s.Sale,
+                                     Size = s.Size,
+                                     Status = s.Status
+                                 })).ToList();
+                    return Json(data);
+                case 2:
+                     data = (from s in context.Products
+                                where s.CategoryId == categoryId && !s.IsDelete
+                                orderby s.ProductName
+                                select (new Product()
+                                {
+                                    ProductId = s.ProductId,
+                                    ProductName = s.ProductName,
+                                    Category = s.Category,
+                                    Price = s.Price,
+                                    CategoryId = s.CategoryId,
+                                    IsDelete = s.IsDelete,
+                                    Brand = s.Brand,
+                                    Description = s.Description,
+                                    PathImage = s.PathImage,
+                                    Sale = s.Sale,
+                                    Size = s.Size,
+                                    Status = s.Status
+                                })).ToList();
+                    return Json(data);
+            }
+            return Json(new List<Product>());
+           
         }
 
 

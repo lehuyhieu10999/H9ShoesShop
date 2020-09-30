@@ -3,7 +3,7 @@
     ViewData["Title"] = "H9 Shoes";
     List<Product> products = ViewBag.products;
     var searchstring = ViewBag.Searchstring;
-    var count = ViewBag.count ;
+    var count = ViewBag.count;
     var categories = ViewBag.categories as List<Category>;
     @functions
         {
@@ -17,7 +17,14 @@
     }
 }
 
-
+<style>
+    .product-grid {
+        display: flex !important;
+    }
+    .product-item{
+        margin-right:40px;
+    }
+</style>
 
 <div class="container product_section_container">
     <div class="row">
@@ -211,20 +218,17 @@
 
 
                     if (value['sale'] > 0) {
-
-                         z = value["price"] - (value["price"] * value["sale"] / 100);
-
-                        
+                        z = value["price"] - (value["price"] * value["sale"] / 100);
                         z = z.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
                         var x = value["price"];
                         x = x.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-                        
+
 
 
 
                         $("#product").append(`
 
-                             <div class="product-item">
+                             <div class="product-item ">
                                <div class="product discount product_filter">
                                    <div class="product_image">
                                        <img src="/images/Product/${value["pathImage"]}" alt="">
@@ -240,13 +244,14 @@
                                </div>
                                <div class="red_button add_to_cart_button" style="width:60%;margin-left:40px;"><a href='/Home/Cart/${value["productId"]}' >mua ngay</a></div>
                             </div>
+
                         `);
                     } else {
                         var x = value["price"];
                         x = x.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
 
                         $("#product").append(`
-                            <div class="product-item">
+                            <div class="product-item ">
                                <div class="product discount product_filter">
                                    <div class="product_image">
                                        <img src="/images/Product/${value["pathImage"]}" alt="">

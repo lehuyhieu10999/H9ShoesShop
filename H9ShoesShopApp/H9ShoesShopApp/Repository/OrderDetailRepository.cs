@@ -31,6 +31,11 @@ namespace H9ShoesShopApp.Repository
             return null;
         }
 
+        public List<OrderDetail> Gets()
+        {
+            return context.OrderDetails.ToList();
+        }
+
         public bool Insert(OrderDetail detail)
         {
             try

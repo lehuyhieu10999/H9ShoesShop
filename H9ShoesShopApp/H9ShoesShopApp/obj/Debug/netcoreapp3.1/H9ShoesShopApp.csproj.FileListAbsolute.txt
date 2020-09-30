@@ -471,6 +471,7 @@ C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\bi
 C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\bin\Debug\netcoreapp3.1\PagedList.dll
 C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\bin\Debug\netcoreapp3.1\PagedList.Mvc.dll
+C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\bin\Debug\netcoreapp3.1\Dapper.dll
 C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\H9ShoesShopApp.csproj.CoreCompileInputs.cache
 C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\H9ShoesShopApp.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\ADMIN\Desktop\HuyHieu\CaseStudyModule3\H9ShoesShopApp\H9ShoesShopApp\obj\Debug\netcoreapp3.1\H9ShoesShopApp.MvcApplicationPartsAssemblyInfo.cache
