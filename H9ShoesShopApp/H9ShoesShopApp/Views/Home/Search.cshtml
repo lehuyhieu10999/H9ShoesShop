@@ -21,8 +21,9 @@
     .product-grid {
         display: flex !important;
     }
-    .product-item{
-        margin-right:40px;
+
+    .product-item {
+        margin-right: 40px;
     }
 </style>
 
@@ -42,7 +43,7 @@
                 else
                 {
                     <ul class="text-danger" style="font-size: 17px">
-                        Không có kết quả nào cho "@searchstring"! Vui lòng kiểm tra lại sản phẩm bạn muốn tìm kiếm!!
+                        Không có kết quả nào !!! Vui lòng kiểm tra lại sản phẩm bạn muốn tìm kiếm!!
                     </ul>
                 }
 
@@ -57,26 +58,36 @@
                             <h5>Loại giày</h5>
                         </div>
                         <ul class="sidebar_categories">
-                            @foreach (var item in categories)
-                            {
-                                <li><a href="#" onclick="site.choose(@item.CategoryId)">@item.CategoryName</a></li>
-                            }
+                            <li>
+                                <select class="custom-select" id="category">
+                                    @foreach (var item in categories)
+                                    {
+                                        <option value="@item.CategoryId">@item.CategoryName</option>
+                                    }
+                                </select>
+
+                            </li>
+
                         </ul>
                     </div>
-
-                    <!-- Price Range Filtering -->
                     <div class="sidebar_section">
-                        <div class="sidebar_title">
-                            <h5>Lọc giá</h5>
+                        
+                            <h5>Sắp xếp</h5>
+                     
+                        <div>
+                            <select onchange="site.sort(this)" class="custom-select" id="sort">
+                                <option value="0">Mặc định</option>
+                                <option value="1">Theo giá</option>
+                                <option value="2">Theo tên</option>
+                            </select>
                         </div>
-                        <p>
-                            <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-                        </p>
-                        <div id="slider-range"></div>
-                        <div class="filter_button"><span>filter</span></div>
-                    </div>
 
+                        <div style="margin-top:30px;"><button style="width: 200px !important" class="btn btn-success" onclick="site.choose()">Lọc</button></div>
+
+                    </div>
+                    
                 </div>
+
 
                 <!-- Main Content -->
 
@@ -88,21 +99,7 @@
                         <div class="row">
                             <div class="col">
 
-                                <!-- Product Sorting -->
 
-                                <div class="product_sorting_container product_sorting_container_top">
-                                    <ul class="product_sorting">
-                                        <li>
-                                            <span class="type_sorting_text" id="">Default Sorting</span>
-                                            <i class="fa fa-angle-down"></i>
-                                            <ul class="sorting_type">
-                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Default Sorting</span></li>
-                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Price</span></li>
-                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Product Name</span></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
 
                                 <!-- Product Grid -->
 
@@ -115,7 +112,7 @@
                                         <div class="product-item @item.CategoryId">
                                             <div class="product discount product_filter">
                                                 <div class="product_image">
-                                                    <img src="~/images/Product/@item.PathImage" alt="">
+                                                    <a asp-controller="Home" asp-action="Cart" asp-route-id="@item.ProductId"><img src="~/images/Product/@item.PathImage" alt=""></a>
                                                 </div>
                                                 <div class="favorite favorite_left"></div>
                                                 @if (item.Sale > 0)
@@ -136,7 +133,7 @@
                                                     </div>
                                                 }
                                             </div>
-                                            <div class="red_button add_to_cart_button" style="width:60%;margin-left:40px;"><a asp-controller="Home" asp-action="Cart" asp-route-id="@item.ProductId">mua ngay</a></div>
+                                            <div class="red_button add_to_cart_button" style="width:60%;margin-left:40px;margin-top: -28px !important;"><a asp-controller="Home" asp-action="Cart" asp-route-id="@item.ProductId">mua ngay</a></div>
                                         </div>
                                     }
 
@@ -195,12 +192,16 @@
     </div>
 </div>
 
-
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script>
     var site = {};
-    site.choose = function (categoryId) {
+
+    site.choose = function () {
+        var sort = $('#sort').val();
+        var categoryId = $('#category').val();
         $.ajax({
-            url: `/Home/ProductByCategory/${categoryId}`,
+            url: `/Home/ProductByCategory/${categoryId}/${sort}`,
             method: "GET",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
@@ -231,7 +232,7 @@
                              <div class="product-item ">
                                <div class="product discount product_filter">
                                    <div class="product_image">
-                                       <img src="/images/Product/${value["pathImage"]}" alt="">
+                                   <a  href='/Home/Cart/${value["productId"]}'>   <img src="/images/Product/${value["pathImage"]}" alt=""></a>
                                    </div>
                                    <div class="favorite favorite_left"></div>
                                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
@@ -242,7 +243,7 @@
                                             <div class="product_price">${z}<span>${x}</span></div>
                                        </div>
                                </div>
-                               <div class="red_button add_to_cart_button" style="width:60%;margin-left:40px;"><a href='/Home/Cart/${value["productId"]}' >mua ngay</a></div>
+                               <div class="red_button add_to_cart_button" style="width:60%;margin-left:40px;margin-top: -36px !important;"><a href='/Home/Cart/${value["productId"]}' >mua ngay</a></div>
                             </div>
 
                         `);
@@ -254,7 +255,7 @@
                             <div class="product-item ">
                                <div class="product discount product_filter">
                                    <div class="product_image">
-                                       <img src="/images/Product/${value["pathImage"]}" alt="">
+                                       <a  href='/Home/Cart/${value["productId"]}'>   <img src="/images/Product/${value["pathImage"]}" alt=""></a>
                                    </div>
                                    <div class="favorite favorite_left"></div>
 
@@ -263,7 +264,7 @@
                                            <div class="product_price">${x}<span></span></div>
                                        </div>
                                </div>
-                               <div class="red_button add_to_cart_button" style="width:60%;margin-left:40px;"><a href='/Home/Cart/${value["productId"]}'>mua ngay</a></div>
+                               <div class="red_button add_to_cart_button" style="width:60%;margin-left:40px;margin-top: -36px !important;"><a href='/Home/Cart/${value["productId"]}'>mua ngay</a></div>
                             </div>
 `
                         );

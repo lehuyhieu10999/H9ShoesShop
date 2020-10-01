@@ -50,9 +50,9 @@ namespace H9ShoesShopApp.Controllers
             List<Product> productsale = (from product in productRepository.Gets()
                                          where product.Sale > 0
                                          orderby product.Sale descending
-                                         select product).Take(20).ToList();
+                                         select product).Take(24).ToList();
 
-            var connectionString = "Server=.\\SQLExpress;Database=H9ShoesDb;Trusted_Connection=True;";
+            var connectionString = "workstation id=h9shoesshop.mssql.somee.com;packet size=4096;user id=lehuyhieu1099_SQLLogin_1;pwd=34t3yt94px;data source=h9shoesshop.mssql.somee.com;persist security info=False;initial catalog=h9shoesshop";
             List<int> eventName = new List<int>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -152,15 +152,15 @@ namespace H9ShoesShopApp.Controllers
             return View();
         }
         [AllowAnonymous]
-        [Route("Home/ProductByCategory/{categoryId}")]
-        public IActionResult ProductByCategory(int categoryId, int sort = 0)
+        [Route("Home/ProductByCategory/{categoryId}/{sort}")]
+        public IActionResult ProductByCategory(int categoryId, int sort)
         {
             List<Product> data = new List<Product>();
             switch (sort)
             {
                 case 0:
                      data = (from s in context.Products
-                                where s.CategoryId == categoryId && !s.IsDelete
+                                where s.CategoryId == categoryId && !s.IsDelete && s.Status
                                 orderby s.CategoryId
                                 select (new Product()
                                 {
@@ -180,8 +180,8 @@ namespace H9ShoesShopApp.Controllers
                     return Json(data);
                 case 1:
                      data = (from s in context.Products
-                                 where s.CategoryId == categoryId && !s.IsDelete
-                                 orderby s.Price
+                                 where s.CategoryId == categoryId && !s.IsDelete && s.Status
+                                 orderby s.Price descending
                                  select (new Product()
                                  {
                                      ProductId = s.ProductId,
@@ -200,8 +200,8 @@ namespace H9ShoesShopApp.Controllers
                     return Json(data);
                 case 2:
                      data = (from s in context.Products
-                                where s.CategoryId == categoryId && !s.IsDelete
-                                orderby s.ProductName
+                                where s.CategoryId == categoryId && !s.IsDelete && s.Status
+                             orderby s.ProductName
                                 select (new Product()
                                 {
                                     ProductId = s.ProductId,

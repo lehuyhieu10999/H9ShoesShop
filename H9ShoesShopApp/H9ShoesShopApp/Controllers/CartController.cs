@@ -53,6 +53,10 @@ namespace H9ShoesShopApp.Controllers
             {
                 model.CartItems = cart; 
             }
+            else
+            {
+                model.CartItems = new List<CartItem>();
+            }
             
             return View(model);
         }
