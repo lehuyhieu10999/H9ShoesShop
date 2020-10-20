@@ -55,7 +55,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="~/mystyle/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="~/mystyle/css/sb-admin-2.css" rel="stylesheet" />
-   
+
     <link rel="stylesheet" href="~/theme/plugins/themify-icons/themify-icons.css">
     <link rel="stylesheet" type="text/css" href="~/theme/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="~/theme/styles/single_styles.css">
@@ -64,7 +64,6 @@
     <link rel="stylesheet" type="text/css" href="~/theme/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="~/theme/styles/categories_styles.css">
     <link rel="stylesheet" type="text/css" href="~/theme/styles/categories_responsive.css">
-
     <link href="~/css/site2.css" rel="stylesheet" />
 </head>
 
@@ -134,70 +133,80 @@
                         <div class="col-lg-12 text-right">
                             <div class="logo_container">
                                 <a asp-controller="Home" asp-action="Index">H9<span>Shoes Shop</span></a>
-                            </div>
-                            <div class="logo_container" style="margin-left:300px;width:300px">
-                                <form asp-controller="home" asp-action="search" method="post">
-                                    <div class="input-group md-form form-sm form-2 pl-0" style="width:450px">
-                                        <input asp-for="@Model.Search.SearchString" class="form-control my-0 py-1 red-border" id="searchString" type="text" placeholder="Nhập tên sản phẩm bạn muốn tìm" aria-label="Search">
-
-                                        <div class="input-group-append">
-                                            <button type="submit" class="input-group-text red lighten-3" id="basic-text1">
-                                                <i class="fas fa-search text-grey" id="SearchBtn"
-                                                   aria-hidden="true"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
 
                             </div>
-                          
+
+                            <div class="logo_container" style="margin-left:300px;width:50%">
+            <form asp-controller="home" asp-action="search" method="post">
+                <div class="input-group md-form form-sm form-2 pl-0" style="width:100%">
+                    <input asp-for="@Model.Search.SearchString" class="form-control my-0 py-1 red-border" id="searchString" type="text" placeholder="Nhập tên sản phẩm..." aria-label="Search">
+
+                    <div class="input-group-append">
+                        <button type="submit" class="input-group-text red lighten-3" id="basic-text1">
+                            <i class="fas fa-search text-grey" id="SearchBtn"
+                               aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+ 
                             <nav class="navbar ml-6">
-                                <div class="dropdown">
-                                    <button type="button" style="margin-left:auto" class="btn btn-info" data-toggle="dropdown">
-                                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart <span class="badge badge-pill badge-danger">@count</span>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <div class="row total-header-section">
-                                            <div class="col-lg-6 col-sm-6 col-6">
-                                                <i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="badge badge-pill badge-danger">@count</span>
-                                            </div>
-                                            <div class="col-lg-6 col-sm-6 col-6 total-section text-right">
-                                                <p>Total: <span class="text-info">@(total != ""?total:"0đ")</span></p>
-                                            </div>
+            <div class="dropdown">
+                <button type="button" style="margin-left:auto" class="btn btn-group" data-toggle="dropdown">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;<span class="badge badge-pill badge-danger">@count</span>
+                </button>
+                <div class="dropdown-menu">
+                    <div class="row total-header-section">
+                        <div class="col-lg-6 col-sm-6 col-6">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp; <span class="badge badge-pill badge-danger">@count</span>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-6 total-section text-right">
+                            <p>Total: <span class="text-info">@(total != ""?total:"0đ")</span></p>
+                        </div>
+                    </div>
+                    @if (result != null && result.Count > 0)
+                    {
+                        
+                        
+                            @for (int i = 0; i < result.Count; i++)
+                            {
+                                @if (i < 3)
+                                {
+                                    <div class="row cart-detail">
+                                        <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                                            <img src="~/images/Product/@result[i].Product.PathImage">
                                         </div>
-                                        @if (result != null && result.Count > 0)
-                                        {
-                                            @foreach (var item in result)
-                                            {
-                                                <div class="row cart-detail">
-                                                    <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
-                                                        <img src="~/images/Product/@item.Product.PathImage">
-                                                    </div>
-                                                    <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                                                        <p>@item.Product.ProductName <a class="btn btn-danger" style="font-size:12px" asp-controller="Cart" asp-action="Delete" asp-route-id="@item.Product.ProductId">Xóa</a></p>
-                                                        <span class="price text-info"> @currency((item.Product.Price - item.Product.Price * item.Product.Sale / 100) * @item.Quantity)</span> <span class="count"> Số lượng: @item.Quantity</span>
-                                                    </div>
-                                                </div>
-                                            }
-                                            <div class="row">
-                                                <div class="col-lg-12 col-sm-12 col-12 text-center checkout">
-                                                    <a class="btn btn-danger" asp-controller="Cart" asp-action="Index">Kiểm tra giỏ hàng</a>
-                                                </div>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="text-danger" style="text-align:center;font-size:15px">
-                                                Giỏ hàng của bạn chưa có gì <i class="fas fa-sad-tear"></i><br>
-                                                <img src="~/images/empty.PNG" />
-
-                                                <a class="btn btn-danger" asp-controller="Home" asp-action="Index">Cùng nhau mua sắm nào!!!</a>
-                                            </div>
-                                        }
+                                        <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+                                            <p>@result[i].Product.ProductName <a class="btn btn-danger" style="font-size:12px" asp-controller="Cart" asp-action="Delete" asp-route-id="@result[i].Product.ProductId">Xóa</a></p>
+                                            <span class="price text-info"> @currency((result[i].Product.Price - result[i].Product.Price * result[i].Product.Sale / 100) * result[i].Quantity)</span> <span class="count"> Số lượng: @result[i].Quantity</span>
+                                        </div>
                                     </div>
-                                </div>
+                                }
 
-                            </nav>
+                            }
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12 col-12 text-center ">
+                                    <a class="btn btn-danger" asp-controller="Cart" asp-action="Index">Xem giỏ hàng</a>
+                                </div>
+                            </div>
+                        
+
+                    }
+                    else
+                    {
+                        <div class="text-danger" style="text-align:center;font-size:15px">
+                            Giỏ hàng của bạn chưa có gì <i class="fas fa-sad-tear"></i><br>
+                            <img src="~/images/empty.PNG" />
+
+                            <a class="btn btn-danger" asp-controller="Home" asp-action="Index">Cùng nhau mua sắm nào!!!</a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </nav>
                         </div>
                     </div>
                 </div>
@@ -212,44 +221,15 @@
                 <ul class="menu_top_nav">
                     <li class="menu_item has-children">
                         <a href="#">
-                            usd
+                            Tài khoản
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="menu_selection">
-                            <li><a href="#">cad</a></li>
-                            <li><a href="#">aud</a></li>
-                            <li><a href="#">eur</a></li>
-                            <li><a href="#">gbp</a></li>
+                            <li><a asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng nhập</a></li>
+                            <li><a asp-controller="Account" asp-action="Register"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng ký</a></li>
                         </ul>
                     </li>
-                    <li class="menu_item has-children">
-                        <a href="#">
-                            English
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="menu_selection">
-                            <li><a href="#">French</a></li>
-                            <li><a href="#">Italian</a></li>
-                            <li><a href="#">German</a></li>
-                            <li><a href="#">Spanish</a></li>
-                        </ul>
-                    </li>
-                    <li class="menu_item has-children">
-                        <a href="#">
-                            My Account
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="menu_selection">
-                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
-                        </ul>
-                    </li>
-                    <li class="menu_item"><a href="#">home</a></li>
-                    <li class="menu_item"><a href="#">shop</a></li>
-                    <li class="menu_item"><a href="#">promotion</a></li>
-                    <li class="menu_item"><a href="#">pages</a></li>
-                    <li class="menu_item"><a href="#">blog</a></li>
-                    <li class="menu_item"><a href="#">contact</a></li>
+                    <li class="menu_item"><a href="#">Liên hệ</a></li>
                 </ul>
             </div>
         </div>
@@ -345,8 +325,8 @@
             <!-- Footer Links -->
             <!-- Copyright -->
             <div class="footer-copyright text-center py-3">
-                @DateTime.Now
-                
+                @DateTime.Now.ToString("dd/MM/yyyy")
+
             </div>
             <!-- Copyright -->
 

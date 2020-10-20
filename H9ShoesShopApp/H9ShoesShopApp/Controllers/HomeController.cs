@@ -46,13 +46,13 @@ namespace H9ShoesShopApp.Controllers
         {
             var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("CartSession");
 
-            List<Product> products = productRepository.Gets().Take(20).ToList();
+            List<Product> products = productRepository.Gets().Take(24).ToList();
             List<Product> productsale = (from product in productRepository.Gets()
-                                         where product.Sale > 0
+                                         where product.Sale > 0  
                                          orderby product.Sale descending
                                          select product).Take(24).ToList();
 
-            var connectionString = "workstation id=h9shoesshop.mssql.somee.com;packet size=4096;user id=lehuyhieu1099_SQLLogin_1;pwd=34t3yt94px;data source=h9shoesshop.mssql.somee.com;persist security info=False;initial catalog=h9shoesshop";
+            var connectionString = "workstation id=h9shopdb.mssql.somee.com;packet size=4096;user id=hieucg1099_SQLLogin_1;pwd=tfnay92ec8;data source=h9shopdb.mssql.somee.com;persist security info=False;initial catalog=h9shopdb";
             List<int> eventName = new List<int>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))

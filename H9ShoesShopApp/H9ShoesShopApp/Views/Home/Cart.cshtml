@@ -54,7 +54,8 @@
                     <h2>@product.ProductName</h2>
                     <p>@product.Description</p>
                     <p>Thương hiệu: @product.Brand</p>
-                    <p>Size: @product.Size</p>
+                    <p>Size: @product.Size @(int.Parse(product.Size)+1)  @(int.Parse(product.Size)+2) </p>
+                    
 
                 </div>
                 <div class="free_delivery d-flex flex-row align-items-center justify-content-center">
@@ -187,7 +188,7 @@
                     method: "GET",
                     contentType: 'json',
                     success: function () {
-                        window.location.replace("http://h9shoes.somee.com/");
+                        window.location.replace("http://h9shoesshop.somee.com/");
 
                     }
                 });

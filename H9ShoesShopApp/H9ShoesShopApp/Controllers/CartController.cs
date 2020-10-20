@@ -175,7 +175,6 @@ namespace H9ShoesShopApp.Controllers
                     var _orderDetail = new OrderDetail();
                     orderDetail.ProductID = item.Product.ProductId;
                     orderDetail.OrderID = order.ID;
-                    orderDetail.Price = item.Product.Price;
                     orderDetail.Quantity = item.Quantity;
                     orderDetailRepository.Insert(orderDetail);
                 }

@@ -54,7 +54,7 @@
             <div class="col-md-4">
                 <div class="banner_item align-items-center" style="        background-image: url(/theme/images/banner_3.jpg)">
                     <div class="banner_category">
-                        <a href="#selling">Men's</a>
+                        <a href="#selling">Best Seller</a>
                     </div>
                 </div>
             </div>
@@ -80,7 +80,10 @@
                         <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked" data-filter="*">all</li>
                         @foreach (var category in categories)
                         {
+                            if (!category.IsDelete && category.Status)
+                            {
                             <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center" data-filter=".@category.CategoryId">@category.CategoryName</li>
+                            }
                         }
                     </ul>
                 </div>
@@ -89,9 +92,9 @@
         <div class="row">
             <div class="col">
                 <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
-                    @foreach (var product in Model.HomeView.products)
+                    @foreach (var product in Model.HomeView.products )
                     {
-                        @if (product.Status && !product.IsDelete && product.Sale > 0)
+                        @if (product.Status && !product.IsDelete && product.Sale > 0 && !product.Category.IsDelete && product.Category.Status)
                         {<div class="product-item @product.Category.CategoryId">
                                 <div class="product discount product_filter">
                                     <div class="product_image">
@@ -107,7 +110,7 @@
                                 </div>
                             </div>
                         }
-                        else if (product.Status && !product.IsDelete && product.Sale == 0)
+                        else if (product.Status && !product.IsDelete && product.Sale == 0 && !product.Category.IsDelete && product.Category.Status)
                         {
 
                             <div class="product-item @product.Category.CategoryId">
@@ -190,7 +193,7 @@
                         <!-- Slide 1 -->
                         @foreach (var product in Model.HomeView.productssale)
                         {
-                            @if (product.Status && !product.IsDelete)
+                            @if (product.Status && !product.IsDelete && !product.Category.IsDelete && product.Category.Status)
                             {
                                 <div class="owl-item product_slider_item">
                                     <div class="product-item">
@@ -244,7 +247,7 @@
                         <!-- Slide 1 -->
                         @foreach (var product in Model.HomeView.bestbuyproducts)
                         {
-                            @if (product.Status && !product.IsDelete && product.Sale > 0)
+                            @if (product.Status && !product.IsDelete && product.Sale > 0 && !product.Category.IsDelete && product.Category.Status)
                             {<div class="owl-item product_slider_item">
                                     <div class="product-item">
                                         <div class="product discount">
@@ -262,7 +265,7 @@
                                     </div>
                                 </div>
                             }
-                            else if (product.Status && !product.IsDelete && product.Sale == 0)
+                            else if (product.Status && !product.IsDelete && product.Sale == 0 && !product.Category.IsDelete && product.Category.Status)
                             {
 
                     <div class="owl-item product_slider_item">
@@ -282,14 +285,6 @@
                     </div>
                             }
                         }
-                    </div>
-                    <!-- Slider Navigation -->
-
-                    <div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
-                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                    </div>
-                    <div class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
                     </div>
                 </div>
             </div>

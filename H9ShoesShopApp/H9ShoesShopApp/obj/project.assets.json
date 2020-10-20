@@ -9371,11 +9371,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ADMIN\\Desktop\\HuyHieu\\CaseStudyModule3\\H9ShoesShopApp\\H9ShoesShopApp\\H9ShoesShopApp.csproj",
+      "projectUniqueName": "C:\\Users\\ADMIN\\Desktop\\Hieu\\CaseStudyModule3\\H9ShoesShopApp\\H9ShoesShopApp\\H9ShoesShopApp.csproj",
       "projectName": "H9ShoesShopApp",
-      "projectPath": "C:\\Users\\ADMIN\\Desktop\\HuyHieu\\CaseStudyModule3\\H9ShoesShopApp\\H9ShoesShopApp\\H9ShoesShopApp.csproj",
+      "projectPath": "C:\\Users\\ADMIN\\Desktop\\Hieu\\CaseStudyModule3\\H9ShoesShopApp\\H9ShoesShopApp\\H9ShoesShopApp.csproj",
       "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ADMIN\\Desktop\\HuyHieu\\CaseStudyModule3\\H9ShoesShopApp\\H9ShoesShopApp\\obj\\",
+      "outputPath": "C:\\Users\\ADMIN\\Desktop\\Hieu\\CaseStudyModule3\\H9ShoesShopApp\\H9ShoesShopApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -9467,7 +9467,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
       }
     }
   }
