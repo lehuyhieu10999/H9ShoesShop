@@ -1,28 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region using
+
+using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+
 using H9ShoesShopApp.Models;
 using H9ShoesShopApp.ViewModel.Account;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+#endregion
+
 namespace H9ShoesShopApp.Controllers
 {
-  
-    public class AccountController : Controller
+
+	public class AccountController : Controller
     {
-        private readonly IWebHostEnvironment webHostEnvironment;
+		#region Field
+
+		private readonly IWebHostEnvironment webHostEnvironment;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
-        public AccountController(UserManager<ApplicationUser> userManager,
-                                IWebHostEnvironment webHostEnvironment,
-                                SignInManager<ApplicationUser> signInManager,
-                                RoleManager<IdentityRole> roleManager)
+
+        #endregion
+
+        #region Constructor
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="webHostEnvironment"></param>
+        /// <param name="signInManager"></param>
+        /// <param name="roleManager"></param>
+        public AccountController(   UserManager<ApplicationUser> userManager,
+                                    IWebHostEnvironment webHostEnvironment,
+                                    SignInManager<ApplicationUser> signInManager,
+                                    RoleManager<IdentityRole> roleManager )
         {
             this.webHostEnvironment = webHostEnvironment;
             this.userManager = userManager;
@@ -30,16 +47,21 @@ namespace H9ShoesShopApp.Controllers
             this.roleManager = roleManager;
         }
 
+        #endregion
+
+
         public IActionResult Index()
         {
             return View();
         }
+
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
+
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(Register model)
