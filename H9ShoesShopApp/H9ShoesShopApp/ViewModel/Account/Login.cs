@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace H9ShoesShopApp.ViewModel.Account
 {
-    public class Login
+	public class Login
     {
         [Required]
         [DataType(DataType.EmailAddress)]

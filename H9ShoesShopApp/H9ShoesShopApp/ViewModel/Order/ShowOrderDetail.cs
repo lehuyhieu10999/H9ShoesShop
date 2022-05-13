@@ -1,12 +1,8 @@
 ﻿using H9ShoesShopApp.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace H9ShoesShopApp.ViewModel.Order
 {
-    public class ShowOrderDetail
+	public class ShowOrderDetail
     {
         public int ID { get; set; }
         public string ApplicationUserId { get; set; }

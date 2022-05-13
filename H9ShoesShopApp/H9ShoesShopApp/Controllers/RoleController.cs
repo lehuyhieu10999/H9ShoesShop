@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using H9ShoesShopApp.Models.Identities;
+﻿using H9ShoesShopApp.Models.Identities;
 using H9ShoesShopApp.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace H9ShoesShopApp.Controllers
 {
-    [Authorize(Roles = "System Admin")]
+	[Authorize(Roles = "System Admin")]
     public class RoleController : Controller
     {
         

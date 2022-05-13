@@ -1,14 +1,10 @@
 ﻿using H9ShoesShopApp.Models.Entities;
-using H9ShoesShopApp.ViewModel.Category;
 using H9ShoesShopApp.ViewModel.Products;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace H9ShoesShopApp.Models.Repository
 {
-    public interface IProductRepository
+	public interface IProductRepository
     {
         IEnumerable<Product> Gets();
         Product Get(int id);

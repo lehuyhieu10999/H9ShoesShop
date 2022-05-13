@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace H9ShoesShopApp.ViewModel.Products
 {
-    public class ProductCreate
+	public class ProductCreate
     {
         [Required(ErrorMessage = "Tên sản phẩm không được để trống")]
         [Display(Name ="Tên sản phẩm")]

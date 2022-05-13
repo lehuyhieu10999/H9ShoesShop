@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using H9ShoesShopApp.Models;
+﻿using H9ShoesShopApp.Models;
 using H9ShoesShopApp.Models.Entities;
 using H9ShoesShopApp.Models.Repository;
-using H9ShoesShopApp.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace H9ShoesShopApp.Controllers
 {
-    public class OrderController : Controller
+	public class OrderController : Controller
     {
         private readonly AppDbContext context;
         private readonly IOrderRepository orderRepository;

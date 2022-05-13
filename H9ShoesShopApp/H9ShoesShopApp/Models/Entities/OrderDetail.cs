@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace H9ShoesShopApp.Models.Entities
 {
-    public class OrderDetail
+	public class OrderDetail
     {
         [Column(Order = 0), Key, ForeignKey("Product")]
         public int ProductID { get; set; }

@@ -1,6 +1,3 @@
-// System
-using System;
-
 // H9
 using H9ShoesShopApp.Models;
 using H9ShoesShopApp.Models.Repository;
@@ -16,10 +13,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace H9ShoesShopApp
 {
-    public class Startup
+	public class Startup
     {
         public Startup( IConfiguration configuration )
         {
