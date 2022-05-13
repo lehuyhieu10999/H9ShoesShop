@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using System;
 
 namespace H9ShoesShopApp.Helpers
 {
-    public static class SessionHelper
+	public static class SessionHelper
     {
         public static void SetObjectAsJson(this ISession session, string key, object value)
         {
@@ -19,5 +18,3 @@ namespace H9ShoesShopApp.Helpers
        
     }
 }
-
-

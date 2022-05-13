@@ -1,25 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using H9ShoesShopApp.Models.Repository;
-using H9ShoesShopApp.Models.Entities;
-using Microsoft.AspNetCore.Hosting;
-using H9ShoesShopApp.ViewModel;
-using System;
+﻿using Dapper;
 using H9ShoesShopApp.Helpers;
-using Microsoft.AspNetCore.Http;
-using System.Text.RegularExpressions;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using H9ShoesShopApp.Models;
+using H9ShoesShopApp.Models.Entities;
+using H9ShoesShopApp.Models.Repository;
 using H9ShoesShopApp.Repository;
+using H9ShoesShopApp.ViewModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using Dapper;
-using System.Collections;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace H9ShoesShopApp.Controllers
 {
-    public class HomeController : Controller
+	public class HomeController : Controller
     {
         private  IProductRepository productRepository;
         private readonly ICategoryRepository categoryRepository;

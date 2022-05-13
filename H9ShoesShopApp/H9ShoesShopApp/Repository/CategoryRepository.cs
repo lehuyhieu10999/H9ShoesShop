@@ -6,13 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
-using System.Security.Cryptography;
-using System.Threading;
 
 namespace H9ShoesShopApp.Models.Repository
 {
-    public class CategoryRepository : ICategoryRepository 
+	public class CategoryRepository : ICategoryRepository 
     {
         private readonly AppDbContext context;
         private IWebHostEnvironment webHostEnvironment;

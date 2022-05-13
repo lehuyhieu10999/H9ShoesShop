@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace H9ShoesShopApp.ViewModel.Account
 {
-    public class ChangePass
+	public class ChangePass
     {
         public string Id { get; set; }
         [Required(ErrorMessage = "Bạn chưa Nhập mật khẩu hiện tại")]

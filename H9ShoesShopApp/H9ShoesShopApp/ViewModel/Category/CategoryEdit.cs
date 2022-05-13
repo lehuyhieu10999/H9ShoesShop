@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace H9ShoesShopApp.ViewModel.Category
 {
-    public class CategoryEdit
+	public class CategoryEdit
     {
         public int CategoryId { get; set; }
         public string ImagePath { get; set; }

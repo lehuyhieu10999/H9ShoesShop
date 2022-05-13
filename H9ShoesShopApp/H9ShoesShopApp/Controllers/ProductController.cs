@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using H9ShoesShopApp.Models.Entities;
-using H9ShoesShopApp.Models.Repository;
+﻿using H9ShoesShopApp.Models.Repository;
 using H9ShoesShopApp.ViewModel.Products;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 
 namespace H9ShoesShopApp.Controllers
 {
-  public class ProductController : Controller
+	public class ProductController : Controller
     {
         private IProductRepository productRepository;
         private ICategoryRepository categoryRepository;

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace H9ShoesShopApp.ViewModel.Products
 {
-    public class ShowAll
+	public class ShowAll
     {
         public int ProductId { get; set; }
         [Display(Name = "Tên sản phẩm")]

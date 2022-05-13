@@ -1,13 +1,11 @@
 ﻿using H9ShoesShopApp.Models;
 using H9ShoesShopApp.Models.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace H9ShoesShopApp.Repository
 {
-    public class OrderDetailRepository : IOrderDetailRepository
+	public class OrderDetailRepository : IOrderDetailRepository
     {
         private readonly AppDbContext context;
 

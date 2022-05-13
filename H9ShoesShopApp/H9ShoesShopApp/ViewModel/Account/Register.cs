@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace H9ShoesShopApp.ViewModel.Account
 {
-    public class Register
+	public class Register
     {
         [Required(ErrorMessage = "Email là bắt buộc")]
         [DataType(DataType.EmailAddress)]

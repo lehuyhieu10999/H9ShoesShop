@@ -1,24 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using H9ShoesShopApp.Models.Entities;
-using H9ShoesShopApp.Models.Repository;
-using H9ShoesShopApp.ViewModel.Category;
-using Microsoft.AspNetCore.Authorization;
+﻿#region using
+
+// System
+using System;
+
+// ASP .NET Core
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
+// H9
+using H9ShoesShopApp.Models.Repository;
+using H9ShoesShopApp.ViewModel.Category;
+
+#endregion
+
 namespace H9ShoesShopApp.Controllers
 {
-   
-    public class CategoryController : Controller
+
+	public class CategoryController : Controller
     {
+        #region Biến
+
+        /// <summary>
+        /// WebHostEnvironment
+        /// </summary>
         private readonly IWebHostEnvironment webHostEnvironment;
+
+        /// <summary>
+        /// Repository: Category
+        /// </summary>
         private readonly ICategoryRepository categoryRepository;
+
+        /// <summary>
+        /// Repository: Product
+        /// </summary>
         public readonly IProductRepository productRepository;
 
+        #endregion
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="webHostEnvironment"></param>
+        /// <param name="productRepository"></param>
+        /// <param name="categoryRepository"></param>
         public CategoryController(IWebHostEnvironment webHostEnvironment,
             IProductRepository productRepository,
             ICategoryRepository categoryRepository)
